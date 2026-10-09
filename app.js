@@ -82,7 +82,9 @@ function contentBy(category, id) {
 }
 
 function activeKnowledge() {
-  return (DATA.wissen || []).filter(q => q.active === true && q.answerStatus !== 'placeholder' && q.correctAnswer !== '__NOCH_OFFEN__');
+  // Alle gelieferten Wissensfragen dürfen schon gezogen werden.
+  // Solange eine echte Lösung fehlt, zeigt die Webseite später nur "Antwort kommt noch".
+  return DATA.wissen || [];
 }
 
 async function createRoom() {
@@ -198,7 +200,8 @@ function renderPlayers() {
     return;
   }
   for (const [uid, player] of entries) {
-    el.append(node('div', `${player.name}${uid === myUid() ? ' (du)' : ''}`, 'player-card'));
+    const roleText = player.role?.title ? ` · 👑 ${player.role.title}` : '';
+    el.append(node('div', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`, 'player-card'));
   }
 }
 
@@ -236,10 +239,7 @@ function renderCategoryArea() {
   ];
 
   for (const [key, label] of categories) {
-    const button = node('button', label);
-    if (key === 'wissen' && activeKnowledge().length === 0) {
-      button.title = 'Noch keine Wissensfragen mit fertiger Lösung aktiviert.';
-    }
+    const button = node('button', label, `category-btn category-${key}`);
     button.onclick = action(() => drawCard(key));
     grid.append(button);
   }
@@ -253,7 +253,7 @@ async function drawCard(category) {
   let item;
   if (category === 'wissen') {
     const available = activeKnowledge();
-    if (!available.length) throw new Error('Aktuell ist noch keine Wissensfrage mit fertiger Lösung aktiviert.');
+    if (!available.length) throw new Error('Es sind keine Wissensfragen vorhanden.');
     item = randomItem(available);
   } else if (category === 'duell') {
     const one = DATA.duelle?.['1v1'] || [];
@@ -280,10 +280,19 @@ async function drawCard(category) {
     return nextCard;
   });
   if (!result.committed) throw new Error('Jemand anderes hat gerade bereits eine Karte gezogen.');
+
+  // Eine gezogene Rolle gehört der Person, die sie auf ihrem Handy gezogen hat.
+  // Eine spätere Rolle ersetzt automatisch die bisherige Rolle dieser Person.
+  if (category === 'rolle') {
+    await set(ref(db, `rooms/${roomCode}/players/${myUid()}/role`), {
+      id: item.id,
+      title: item.title
+    });
+  }
 }
 
-function contentCard(title, text, kicker = '') {
-  const card = node('div', '', 'content-card');
+function contentCard(title, text, kicker = '', category = '') {
+  const card = node('div', '', `content-card${category ? ` card-${category}` : ''}`);
   if (kicker) card.append(node('div', kicker, 'muted'));
   card.append(node('h2', title), node('p', text, 'big'));
   return card;
@@ -303,28 +312,31 @@ function renderCurrentCard() {
   }
 
   if (current.category === 'wissen') {
-    el.append(contentCard('Wissen', content.question, content.subtype || ''));
+    el.append(contentCard('Wissen', content.question, content.subtype || '', 'wissen'));
     if (current.solutionVisible) {
-      const answer = `${content.correctAnswer}${content.unit ? ` ${content.unit}` : ''}`;
-      el.append(node('div', `Lösung: ${answer}`, 'notice'));
+      const hasAnswer = content.answerStatus !== 'placeholder' && content.correctAnswer && content.correctAnswer !== '__NOCH_OFFEN__';
+      const answer = hasAnswer
+        ? `${content.correctAnswer}${content.unit ? ` ${content.unit}` : ''}`
+        : 'Antwort kommt noch';
+      el.append(node('div', hasAnswer ? `Antwort: ${answer}` : answer, 'answer-box'));
     } else {
-      const reveal = node('button', 'Lösung anzeigen', 'secondary');
+      const reveal = node('button', 'Antwort anzeigen', 'secondary');
       reveal.onclick = action(() => update(ref(db, `rooms/${roomCode}/current`), { solutionVisible: true }));
       el.append(reveal);
     }
   } else if (current.category === 'duell') {
-    el.append(contentCard(content.title, content.text, `Duell ${content.mode}`));
+    el.append(contentCard(content.title, content.text, `Duell ${content.mode}`, 'duell'));
   } else if (current.category === 'trinken') {
-    el.append(contentCard('Trinken', content.text));
+    el.append(contentCard('Trinken', content.text, '', 'trinken'));
   } else if (current.category === 'regel') {
-    el.append(contentCard(content.title, content.text, 'Regel'));
+    el.append(contentCard(content.title, content.text, 'Regel', 'regel'));
     if ((content.variables || []).length) {
       el.append(node('div', 'Legt die benötigten Werte oder Personen gemeinsam fest. Die Webseite speichert die Regel nicht.', 'notice'));
     }
   } else if (current.category === 'rolle') {
-    el.append(contentCard(content.title, content.text, 'Titel / Rolle'));
+    el.append(contentCard(content.title, content.text, 'Titel / Rolle', 'rolle'));
   } else if (current.category === 'ereignis') {
-    el.append(contentCard(content.title, content.text, 'Ereignis'));
+    el.append(contentCard(content.title, content.text, 'Ereignis', 'ereignis'));
   }
 
   appendDoneButton(el);
