@@ -1,0 +1,2033 @@
+{
+  "meta": {
+    "title": "Quizspiel – App-Inhalte",
+    "version": "1.1",
+    "language": "de",
+    "categoriesIncluded": [
+      "rollen",
+      "regeln",
+      "ereignisse",
+      "duelle",
+      "trinken",
+      "wissen"
+    ],
+    "knowledgeQuestionsIncluded": true,
+    "note": "Die Wissensfragen sind enthalten. Da die Lösungen noch nicht vollständig vorliegen, steht correctAnswer derzeit auf '__NOCH_OFFEN__', answerStatus auf 'placeholder' und active auf false. Sobald eine Lösung eingetragen ist, kann active auf true gesetzt werden.",
+    "knowledgeQuestionCount": 76
+  },
+  "rollen": [
+    {
+      "id": "rolle_001_smoky_eyes",
+      "title": "Smoky Eyes",
+      "text": "Niemand darf dir direkt in die Augen schauen. Wer es trotzdem tut, trinkt 1 Schluck."
+    },
+    {
+      "id": "rolle_002_dorfaltester",
+      "title": "Dorfältester",
+      "text": "Wer dir eine Frage beantwortet, trinkt 1 Schluck."
+    },
+    {
+      "id": "rolle_003_konig",
+      "title": "König",
+      "text": "Du darfst pro Runde 2 zusätzliche Schlücke verteilen."
+    },
+    {
+      "id": "rolle_004_delegator",
+      "title": "Delegator",
+      "text": "Wenn du trinken musst, darfst du 1 Schluck davon an eine andere Person weitergeben."
+    },
+    {
+      "id": "rolle_005_hofnarr",
+      "title": "Hofnarr",
+      "text": "Wenn du jemanden zum Lachen bringst, darfst du 2 Schlücke an diese Person verteilen."
+    },
+    {
+      "id": "rolle_006_bodyguard",
+      "title": "Bodyguard",
+      "text": "Wähle eine Person als Schützling. Einmal pro Runde, wenn diese Person trinken muss, übernimmst du 1 Schluck für sie."
+    },
+    {
+      "id": "rolle_007_steuereintreiber",
+      "title": "Steuereintreiber",
+      "text": "Wenn jemand 3 oder mehr Schlücke verteilen darf, erhältst du automatisch 1 dieser Schlücke zum Weiterverteilen."
+    },
+    {
+      "id": "rolle_008_spiegelmeister",
+      "title": "Spiegelmeister",
+      "text": "Wenn du trinkst, darfst du eine Person bestimmen, die ebenfalls 1 Schluck trinkt."
+    },
+    {
+      "id": "rolle_009_schutzschild",
+      "title": "Schutzschild",
+      "text": "Einmal pro Runde darfst du 1 gegen dich gerichteten Schluck abwehren."
+    },
+    {
+      "id": "rolle_010_dieb",
+      "title": "Dieb",
+      "text": "Einmal pro Runde darfst du 1 verteilten Schluck „klauen“ und an eine andere Person weitergeben."
+    },
+    {
+      "id": "rolle_011_prophet",
+      "title": "Prophet",
+      "text": "Vor einem Würfelwurf darfst du einmal pro Runde eine Zahl nennen. Wird genau diese Zahl gewürfelt, darfst du 3 Schlücke verteilen."
+    },
+    {
+      "id": "rolle_012_pechvogel",
+      "title": "Pechvogel",
+      "text": "Wenn du eine 1 würfelst, trinkt eine Person deiner Wahl statt dir."
+    },
+    {
+      "id": "rolle_013_echo_konig",
+      "title": "Echo-König",
+      "text": "Wenn jemand deinen Namen sagt, darfst du dieser Person 1 Schluck geben."
+    },
+    {
+      "id": "rolle_014_barkeeper",
+      "title": "Barkeeper",
+      "text": "Wenn jemand sein Glas nachfüllt, darfst du 1 Schluck verteilen."
+    }
+  ],
+  "regeln": [
+    {
+      "id": "regel_001_mannchen",
+      "title": "Männchen",
+      "text": "Vor jedem Trinken musst du ein imaginäres Männchen vom Glasrand nehmen und es danach wieder daraufsetzen. Vergisst du einen der Schritte, gilt die Regel als gebrochen.",
+      "variables": []
+    },
+    {
+      "id": "regel_002_linke_hand",
+      "title": "Linke Hand",
+      "text": "Ab jetzt darf nur noch mit der linken Hand getrunken werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_003_rechte_hand",
+      "title": "Rechte Hand",
+      "text": "Ab jetzt darf nur noch mit der rechten Hand getrunken werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_004_kleiner_finger",
+      "title": "Kleiner Finger",
+      "text": "Beim Trinken muss der kleine Finger abgespreizt sein.",
+      "variables": []
+    },
+    {
+      "id": "regel_005_anstossen",
+      "title": "Anstoßen",
+      "text": "Vor jedem Schluck muss mit mindestens einer Person angestoßen werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_006_blickkontakt",
+      "title": "Blickkontakt",
+      "text": "Beim Anstoßen und während des Trinkens muss Blickkontakt gehalten werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_007_name_verboten",
+      "title": "Name verboten",
+      "text": "Die echten Namen der Mitspieler dürfen nicht mehr benutzt werden. Verwendet stattdessen Spitznamen.",
+      "variables": []
+    },
+    {
+      "id": "regel_008_ja_nein_verboten",
+      "title": "Ja/Nein verboten",
+      "text": "Die Wörter „ja“ und „nein“ dürfen nicht benutzt werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_009_ich_verboten",
+      "title": "Ich verboten",
+      "text": "Das Wort „ich“ darf nicht benutzt werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_010_fluchen_verboten",
+      "title": "Fluchen verboten",
+      "text": "Fluchen ist verboten. Wer flucht, verliert.",
+      "variables": []
+    },
+    {
+      "id": "regel_011_englisch_verboten",
+      "title": "Englisch verboten",
+      "text": "Englische Wörter dürfen nicht verwendet werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_012_dritte_person",
+      "title": "Dritte Person",
+      "text": "Jede Person muss von sich selbst in der dritten Person sprechen.",
+      "variables": []
+    },
+    {
+      "id": "regel_013_kein_zeigen",
+      "title": "Kein Zeigen",
+      "text": "Es ist verboten, mit dem Finger auf eine andere Person zu zeigen.",
+      "variables": []
+    },
+    {
+      "id": "regel_014_kein_fluchen_plus_kein_zeigen",
+      "title": "Kein Fluchen + kein Zeigen",
+      "text": "Es darf weder geflucht noch mit dem Finger auf andere Personen gezeigt werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_015_glas_nicht_abstellen",
+      "title": "Glas nicht abstellen",
+      "text": "Das Glas darf nur noch an einem festgelegten Platz abgestellt werden.",
+      "variables": [
+        "platz"
+      ]
+    },
+    {
+      "id": "regel_016_trinkwort",
+      "title": "Trinkwort",
+      "text": "Vor jedem Trinken muss ein festgelegtes Wort gesagt werden.",
+      "variables": [
+        "wort"
+      ]
+    },
+    {
+      "id": "regel_017_finger_an_die_stirn",
+      "title": "Finger an die Stirn",
+      "text": "Vor dem Trinken muss kurz die Stirn berührt werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_018_andere_hand_ans_ohr",
+      "title": "Andere Hand ans Ohr",
+      "text": "Während des Trinkens muss die freie Hand ans Ohr gehalten werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_019_aufstehen",
+      "title": "Aufstehen",
+      "text": "Vor jedem Trinken muss kurz aufgestanden werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_020_kein_vorname",
+      "title": "Kein Vorname",
+      "text": "Alle Personen dürfen nur noch mit ihrem Nachnamen angesprochen werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_021_neue_namen",
+      "title": "Neue Namen",
+      "text": "Jede Person erhält für die Dauer dieser Regel einen neuen Namen und darf nur noch mit diesem angesprochen werden.",
+      "variables": [
+        "neue_namen"
+      ]
+    },
+    {
+      "id": "regel_022_antwortpflicht",
+      "title": "Antwortpflicht",
+      "text": "Wenn jemand deinen Namen sagt, musst du mit einem vorher festgelegten Wort antworten.",
+      "variables": [
+        "antwortwort"
+      ]
+    },
+    {
+      "id": "regel_023_echo",
+      "title": "Echo",
+      "text": "Die Person rechts von dir muss nach jedem deiner Redebeiträge dein letztes gesprochenes Wort wiederholen.",
+      "variables": []
+    },
+    {
+      "id": "regel_024_spiegel",
+      "title": "Spiegel",
+      "text": "Die Person links von dir muss deine Trinkbewegung nachmachen.",
+      "variables": []
+    },
+    {
+      "id": "regel_025_daumenmaster",
+      "title": "Daumenmaster",
+      "text": "Eine bestimmte Person darf jederzeit unauffällig den Daumen auf den Tisch legen. Alle anderen müssen es nachmachen. Wer zuletzt reagiert, bekommt die Strafe.",
+      "variables": []
+    },
+    {
+      "id": "regel_026_freeze",
+      "title": "Freeze",
+      "text": "Eine bestimmte Person darf jederzeit einfrieren. Alle anderen müssen ebenfalls sofort stillstehen. Wer zuletzt reagiert, verliert.",
+      "variables": []
+    },
+    {
+      "id": "regel_027_namentausch",
+      "title": "Namentausch",
+      "text": "Du trägst ab jetzt den Namen der Person links von dir.",
+      "variables": []
+    },
+    {
+      "id": "regel_028_satzanfang",
+      "title": "Satzanfang",
+      "text": "Jeder Satz muss mit einem festgelegten Wort beginnen.",
+      "variables": [
+        "wort"
+      ]
+    },
+    {
+      "id": "regel_029_satzende",
+      "title": "Satzende",
+      "text": "Jeder Satz muss mit einem festgelegten Wort enden.",
+      "variables": [
+        "wort"
+      ]
+    },
+    {
+      "id": "regel_030_glaswechsel",
+      "title": "Glaswechsel",
+      "text": "Nach jedem eigenen Zug muss das Glas einmal den Platz wechseln.",
+      "variables": []
+    },
+    {
+      "id": "regel_031_trinkbuddy",
+      "title": "Trinkbuddy",
+      "text": "Jede Person bestimmt einen Trinkbuddy. Wenn du trinkst, muss dein Trinkbuddy ebenfalls 1 Schluck trinken.",
+      "variables": [
+        "trinkbuddy"
+      ]
+    },
+    {
+      "id": "regel_032_kettenregel",
+      "title": "Kettenregel",
+      "text": "Wenn eine Person trinkt, muss die Person rechts von ihr ebenfalls 1 Schluck trinken.",
+      "variables": []
+    },
+    {
+      "id": "regel_033_zahlenverbot",
+      "title": "Zahlenverbot",
+      "text": "Eine festgelegte Zahl darf nicht ausgesprochen werden.",
+      "variables": [
+        "zahl"
+      ]
+    },
+    {
+      "id": "regel_034_keine_vornamen_plus_keine_pronomen",
+      "title": "Keine Vornamen + keine Pronomen",
+      "text": "Vornamen und Pronomen dürfen nicht verwendet werden.",
+      "variables": []
+    },
+    {
+      "id": "regel_035_erstelle_eine_eigene_regel",
+      "title": "Erstelle eine eigene Regel",
+      "text": "Erstelle eine eigene Regel, die ab sofort für die Runde gilt.",
+      "variables": [
+        "eigene_regel"
+      ]
+    }
+  ],
+  "ereignisse": [
+    {
+      "id": "ereignis_001_nochmal_wurfeln",
+      "title": "Nochmal würfeln",
+      "text": "Du darfst sofort erneut würfeln."
+    },
+    {
+      "id": "ereignis_002_doppelwurf",
+      "title": "Doppelwurf",
+      "text": "Dein nächster Würfelwurf zählt doppelt."
+    },
+    {
+      "id": "ereignis_003_halber_wurf",
+      "title": "Halber Wurf",
+      "text": "Dein nächster Würfelwurf wird halbiert und abgerundet."
+    },
+    {
+      "id": "ereignis_004_plus2_felder",
+      "title": "+2 Felder",
+      "text": "Gehe sofort 2 Felder vor."
+    },
+    {
+      "id": "ereignis_005_plus3_felder",
+      "title": "+3 Felder",
+      "text": "Gehe sofort 3 Felder vor."
+    },
+    {
+      "id": "ereignis_006_plus5_felder",
+      "title": "+5 Felder",
+      "text": "Gehe sofort 5 Felder vor."
+    },
+    {
+      "id": "ereignis_007_2_felder",
+      "title": "-2 Felder",
+      "text": "Gehe sofort 2 Felder zurück."
+    },
+    {
+      "id": "ereignis_008_3_felder",
+      "title": "-3 Felder",
+      "text": "Gehe sofort 3 Felder zurück."
+    },
+    {
+      "id": "ereignis_009_5_felder",
+      "title": "-5 Felder",
+      "text": "Gehe sofort 5 Felder zurück."
+    },
+    {
+      "id": "ereignis_010_ruckwartswurf",
+      "title": "Rückwärtswurf",
+      "text": "Würfle einmal und gehe die gewürfelte Zahl an Feldern zurück."
+    },
+    {
+      "id": "ereignis_011_tauschborse",
+      "title": "Tauschbörse",
+      "text": "Tausche deine Position mit einer Person deiner Wahl."
+    },
+    {
+      "id": "ereignis_012_spitzentausch",
+      "title": "Spitzentausch",
+      "text": "Tausche deine Position mit der aktuell führenden Person."
+    },
+    {
+      "id": "ereignis_013_schlusslichttausch",
+      "title": "Schlusslichttausch",
+      "text": "Tausche deine Position mit der aktuell letzten Person."
+    },
+    {
+      "id": "ereignis_014_nachbartausch",
+      "title": "Nachbartausch",
+      "text": "Tausche deine Position mit der Person, die direkt vor dir liegt."
+    },
+    {
+      "id": "ereignis_015_alle_rucken",
+      "title": "Alle rücken",
+      "text": "Alle außer dir gehen 1 Feld vor."
+    },
+    {
+      "id": "ereignis_016_alle_zuruck",
+      "title": "Alle zurück",
+      "text": "Alle außer dir gehen 1 Feld zurück."
+    },
+    {
+      "id": "ereignis_017_gleichstand",
+      "title": "Gleichstand",
+      "text": "Alle Personen, die auf demselben Feld wie du stehen, gehen gemeinsam 2 Felder vor."
+    },
+    {
+      "id": "ereignis_018_mitnahme",
+      "title": "Mitnahme",
+      "text": "Wähle eine Person. Ihr geht beide 2 Felder vor."
+    },
+    {
+      "id": "ereignis_019_mit_runter",
+      "title": "Mit runter",
+      "text": "Wähle eine Person. Ihr geht beide 2 Felder zurück."
+    },
+    {
+      "id": "ereignis_020_blockade",
+      "title": "Blockade",
+      "text": "Wähle eine Person. Sie darf in ihrem nächsten Zug höchstens 3 Felder vorgehen."
+    },
+    {
+      "id": "ereignis_021_turbo",
+      "title": "Turbo",
+      "text": "In deinem nächsten Zug gehst du mindestens 4 Felder. Würfelst du weniger als 4, zählt der Wurf als 4."
+    },
+    {
+      "id": "ereignis_022_pause",
+      "title": "Pause",
+      "text": "Du setzt deinen nächsten Zug aus."
+    },
+    {
+      "id": "ereignis_023_neuwurf",
+      "title": "Neuwurf",
+      "text": "Deinen nächsten Würfelwurf darfst du einmal wiederholen."
+    },
+    {
+      "id": "ereignis_024_wurfelklau",
+      "title": "Würfelklau",
+      "text": "Wähle eine Person. Bei ihrem nächsten Zug darfst du entscheiden, ob sie ihren Würfelwurf einmal wiederholen muss."
+    },
+    {
+      "id": "ereignis_025_titel_verlieren",
+      "title": "Titel verlieren",
+      "text": "Dein aktueller Titel verfällt."
+    },
+    {
+      "id": "ereignis_026_titel_tauschen",
+      "title": "Titel tauschen",
+      "text": "Tausche deinen Titel mit einer Person deiner Wahl."
+    },
+    {
+      "id": "ereignis_027_titel_klauen",
+      "title": "Titel klauen",
+      "text": "Wähle eine Person und übernimm ihren Titel. Sie hat danach keinen Titel mehr."
+    },
+    {
+      "id": "ereignis_028_titelroulette",
+      "title": "Titelroulette",
+      "text": "Alle Personen mit einem Titel geben ihren Titel an die Person links von ihnen weiter."
+    },
+    {
+      "id": "ereignis_029_regel_loschen",
+      "title": "Regel löschen",
+      "text": "Entferne eine aktive Regel deiner Wahl."
+    },
+    {
+      "id": "ereignis_030_regelwechsel",
+      "title": "Regelwechsel",
+      "text": "Eine zufällige aktive Regel wird entfernt und durch eine neue Regel ersetzt."
+    },
+    {
+      "id": "ereignis_031_geschenk",
+      "title": "Geschenk",
+      "text": "Wähle eine Person. Sie darf 2 zusätzliche Schlücke verteilen."
+    },
+    {
+      "id": "ereignis_032_duellschutz",
+      "title": "Duellschutz",
+      "text": "Das nächste Duell, zu dem du ausgewählt wirst, darfst du ablehnen."
+    },
+    {
+      "id": "ereignis_033_revanche",
+      "title": "Revanche",
+      "text": "Wenn du dein nächstes Duell verlierst, darfst du sofort ein zweites Duell verlangen."
+    },
+    {
+      "id": "ereignis_034_wissensbonus",
+      "title": "Wissensbonus",
+      "text": "Deine nächste Wissensfrage darf einmal neu gezogen werden."
+    },
+    {
+      "id": "ereignis_035_gegner_bestimmt",
+      "title": "Gegner bestimmt",
+      "text": "Eine andere Person entscheidet, ob du 2 Felder vor oder 1 Feld zurück gehst."
+    },
+    {
+      "id": "ereignis_036_gruppenentscheidung",
+      "title": "Gruppenentscheidung",
+      "text": "Die Gruppe stimmt ab: Du gehst entweder 3 Felder vor oder erhältst einen neuen Titel."
+    },
+    {
+      "id": "ereignis_037_schicksalspartner",
+      "title": "Schicksalspartner",
+      "text": "Wähle eine Person. Ihr würfelt beide. Wer höher würfelt, geht 3 Felder vor; die andere Person geht 1 Feld zurück."
+    },
+    {
+      "id": "ereignis_038_positionschaos",
+      "title": "Positionschaos",
+      "text": "Alle würfeln. Die Person mit dem niedrigsten Wurf geht 2 Felder zurück, die Person mit dem höchsten Wurf 2 Felder vor."
+    },
+    {
+      "id": "ereignis_039_aufholjagd",
+      "title": "Aufholjagd",
+      "text": "Bist du aktuell Letzter, gehst du 4 Felder vor. Andernfalls gehst du 1 Feld vor."
+    },
+    {
+      "id": "ereignis_040_spitzenreiter_pech",
+      "title": "Spitzenreiter-Pech",
+      "text": "Bist du aktuell Erster, gehst du 3 Felder zurück. Andernfalls gehst du 2 Felder vor."
+    },
+    {
+      "id": "ereignis_041_mittelfeldbonus",
+      "title": "Mittelfeldbonus",
+      "text": "Bist du weder Erster noch Letzter, gehst du 3 Felder vor. Andernfalls passiert nichts."
+    },
+    {
+      "id": "ereignis_042_gnadenfeld",
+      "title": "Gnadenfeld",
+      "text": "Liegt deine Figur mindestens 5 Felder hinter der führenden Person, gehst du 4 Felder vor."
+    },
+    {
+      "id": "ereignis_043_ruckschlag",
+      "title": "Rückschlag",
+      "text": "Bist du aktuell in Führung, gehst du 2 Felder zurück. Andernfalls passiert nichts."
+    },
+    {
+      "id": "ereignis_044_bremsklotz",
+      "title": "Bremsklotz",
+      "text": "Die aktuell führende Person geht 2 Felder zurück."
+    },
+    {
+      "id": "ereignis_045_schlusslicht_boost",
+      "title": "Schlusslicht-Boost",
+      "text": "Die aktuell letzte Person geht 3 Felder vor."
+    },
+    {
+      "id": "ereignis_046_alle_zusammen",
+      "title": "Alle zusammen",
+      "text": "Die aktuell letzte Person rückt bis zur Position der vorletzten Person auf."
+    },
+    {
+      "id": "ereignis_047_freie_wahl",
+      "title": "Freie Wahl",
+      "text": "Wähle: Gehe 2 Felder vor oder ziehe einen neuen Titel."
+    },
+    {
+      "id": "ereignis_048_opfer",
+      "title": "Opfer",
+      "text": "Du darfst 2 Felder vorgehen, musst dafür aber deinen aktuellen Titel abgeben."
+    },
+    {
+      "id": "ereignis_049_mutprobe",
+      "title": "Mutprobe",
+      "text": "Du darfst 4 Felder vorgehen, wenn du sofort ein zufälliges Duell spielst. Verlierst du das Duell, gehst du anschließend 2 Felder zurück."
+    },
+    {
+      "id": "ereignis_050_sicher_spielen",
+      "title": "Sicher spielen",
+      "text": "Wähle: Gehe sicher 1 Feld vor oder würfle auf Risiko. Bei 4–6 gehst du weitere 3 Felder vor, bei 1–3 gehst du 2 Felder zurück."
+    },
+    {
+      "id": "ereignis_051_richtungswechsel",
+      "title": "Richtungswechsel",
+      "text": "In deinem nächsten Zug darfst du nach dem Würfeln entscheiden, ob du normal ziehst oder stehen bleibst."
+    },
+    {
+      "id": "ereignis_052_jackpot",
+      "title": "Jackpot",
+      "text": "Gehe sofort 6 Felder vor."
+    },
+    {
+      "id": "ereignis_053_totalschaden",
+      "title": "Totalschaden",
+      "text": "Gehe sofort 6 Felder zurück."
+    }
+  ],
+  "duelle": {
+    "1v1": [
+      {
+        "id": "duell_1v1_001_munzen_schnippen",
+        "title": "Münzen schnippen",
+        "text": "Legt jeweils eine Münze auf euren Daumen und schnippt sie nach vorne. Wer seine Münze am weitesten schnippt, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_002_kronkorken_zielwurf",
+        "title": "Kronkorken-Zielwurf",
+        "text": "Werft abwechselnd von derselben Startlinie einen Kronkorken, eine Münze oder eine Dosenlasche in ein Glas. Wer zuerst trifft, gewinnt. Treffen beide in derselben Runde, wird weitergespielt, bis ein eindeutiger Gewinner feststeht.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_003_papierflieger",
+        "title": "Papierflieger",
+        "text": "Ihr habt 30 Sekunden Zeit, jeweils einen Papierflieger zu bauen. Danach wirft jede Person einmal. Wessen Papierflieger weiter fliegt, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_004_flaschen_dosen_sammeln",
+        "title": "Flaschen/Dosen sammeln",
+        "text": "Ihr habt 15 Sekunden Zeit. Sammelt so viele leere Flaschen oder Dosen wie möglich. Wer am Ende mehr gesammelt hat, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_005_munzturm",
+        "title": "Münzturm",
+        "text": "Baut innerhalb von 30 Sekunden jeweils einen Münzturm. Wer nach Ablauf der Zeit den höheren stabilen Turm hat, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_006_kartenhaus",
+        "title": "Kartenhaus",
+        "text": "Baut innerhalb von 30 Sekunden jeweils ein Kartenhaus. Wer nach Ablauf der Zeit das höhere stabile Kartenhaus hat, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_007_voting_duell",
+        "title": "Voting-Duell",
+        "text": "Die Gruppe stimmt ab, welche der beiden Personen das Duell gewinnt. Die Person mit den meisten Stimmen gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_008_sechser_wurfeln",
+        "title": "Sechser würfeln",
+        "text": "Würfelt so lange, bis eine Person insgesamt 5 Sechsen gesammelt hat. Gewürfelte Sechsen dürfen beiseitegelegt werden. Wer zuerst 5 Sechsen erreicht, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_009_essstabchen_duell",
+        "title": "Essstäbchen-Duell",
+        "text": "Bringt mit Essstäbchen 4 Pingpongbälle in eure eigene Schüssel. Ihr dürft dabei auch Bälle aus der gegnerischen Schüssel zurückklauen. Wer zuerst 4 Pingpongbälle in der eigenen Schüssel hat, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_010_wissensduell",
+        "title": "Wissensduell",
+        "text": "Ihr bekommt dieselbe Schätzfrage und gebt gleichzeitig eure Antwort ein. Wer näher an der richtigen Lösung liegt, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_011_bottle_flip",
+        "title": "Bottle Flip",
+        "text": "Wer zuerst 3 erfolgreiche Bottle Flips schafft, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_012_bierdeckel_fangen",
+        "title": "Bierdeckel-Fangen",
+        "text": "Legt jeweils einen Bierdeckel auf euren Ellenbogen. Schlagt den Arm nach unten und versucht, den Bierdeckel mit derselben Hand zu fangen. Wer zuerst 3 erfolgreiche Fänge schafft, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_013_munze_ins_glas_schnippen",
+        "title": "Münze ins Glas schnippen",
+        "text": "Legt eine Münze auf den Tisch und versucht abwechselnd, sie mit dem Finger in ein Glas zu schnippen. Wer zuerst trifft, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_014_pingpong_becher",
+        "title": "Pingpong-Becher",
+        "text": "Lasst einen Pingpongball einmal auf dem Tisch aufspringen und versucht, ihn anschließend in einem Becher landen zu lassen. Wer zuerst trifft, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_015_strohhalm_rennen",
+        "title": "Strohhalm-Rennen",
+        "text": "Bewegt jeweils einen kleinen Gegenstand, zum Beispiel eine Papierkugel, ausschließlich durch Pusten mit einem Strohhalm über eine Ziellinie. Wer zuerst die Ziellinie erreicht, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_016_stift_balance",
+        "title": "Stift-Balance",
+        "text": "Balanciert jeweils einen Stift auf einem Finger. Währenddessen dürfen Pingpongbälle zur Ablenkung geworfen werden. Wessen Stift länger oben bleibt, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_017_munzdrehen",
+        "title": "Münzdrehen",
+        "text": "Lasst gleichzeitig jeweils eine Münze auf dem Tisch kreiseln. Wessen Münze zuletzt umfällt, gewinnt.",
+        "mode": "1v1"
+      },
+      {
+        "id": "duell_1v1_018_papierreissen",
+        "title": "Papierreißen",
+        "text": "Ihr bekommt jeweils ein DIN-A4-Blatt. Reißt innerhalb von 30 Sekunden daraus eine möglichst lange zusammenhängende Papierbahn. Die längere ununterbrochene Bahn gewinnt.",
+        "mode": "1v1"
+      }
+    ],
+    "2v2": [
+      {
+        "id": "duell_2v2_001_pantomime_duell",
+        "title": "Pantomime-Duell",
+        "text": "Bildet zwei Teams. In jedem Team stellt eine Person pantomimisch einen Begriff dar, den nur sie sehen darf. Der jeweilige Partner muss den Begriff erraten. Das Team, das seinen Begriff zuerst richtig errät, gewinnt.",
+        "mode": "2v2"
+      },
+      {
+        "id": "duell_2v2_002_zeichnen",
+        "title": "Zeichnen",
+        "text": "Bildet zwei Teams. In jedem Team zeichnet eine Person einen Begriff, den der Partner erraten muss. Beide Teams erhalten gleichzeitig unterschiedliche Begriffe mit vergleichbarer Schwierigkeit. Das Team, das seinen Begriff zuerst richtig errät, gewinnt.",
+        "mode": "2v2"
+      },
+      {
+        "id": "duell_2v2_003_ruckenzeichnen",
+        "title": "Rückenzeichnen",
+        "text": "Bildet zwei Teams. In jedem Team zeichnet Person A mit dem Finger ein Symbol oder Wort auf den Rücken von Person B. Person B muss erraten, was gezeichnet wurde. Beide Teams spielen gleichzeitig. Das Team, das zuerst richtig antwortet, gewinnt.",
+        "mode": "2v2"
+      }
+    ]
+  },
+  "trinken": [
+    {
+      "id": "trinken_001",
+      "text": "Trinke 1 Schluck."
+    },
+    {
+      "id": "trinken_002",
+      "text": "Trinke 2 Schlücke."
+    },
+    {
+      "id": "trinken_003",
+      "text": "Trinke 3 Schlücke."
+    },
+    {
+      "id": "trinken_004",
+      "text": "Verteile 2 Schlücke."
+    },
+    {
+      "id": "trinken_005",
+      "text": "Verteile 3 Schlücke."
+    },
+    {
+      "id": "trinken_006",
+      "text": "Verteile 5 Schlücke."
+    },
+    {
+      "id": "trinken_007",
+      "text": "Alle außer dir trinken 1 Schluck."
+    },
+    {
+      "id": "trinken_008",
+      "text": "Du und die Person links von dir trinken jeweils 1 Schluck."
+    },
+    {
+      "id": "trinken_009",
+      "text": "Die Person rechts von dir trinkt 2 Schlücke."
+    },
+    {
+      "id": "trinken_010",
+      "text": "Wähle zwei Personen. Beide trinken jeweils 1 Schluck."
+    },
+    {
+      "id": "trinken_011",
+      "text": "Bestimme eine Person, die mit dir anstößt. Ihr trinkt beide jeweils 1 Schluck."
+    },
+    {
+      "id": "trinken_012",
+      "text": "Die jüngste Person trinkt 1 Schluck."
+    },
+    {
+      "id": "trinken_013",
+      "text": "Die älteste Person trinkt 1 Schluck."
+    },
+    {
+      "id": "trinken_014",
+      "text": "Die Person mit dem vollsten Glas trinkt 2 Schlücke."
+    },
+    {
+      "id": "trinken_015",
+      "text": "Die Person mit dem leersten Glas darf 2 Schlücke verteilen."
+    },
+    {
+      "id": "trinken_016",
+      "text": "Trinke 1 Shot."
+    },
+    {
+      "id": "trinken_017",
+      "text": "Verteile 1 Shot."
+    },
+    {
+      "id": "trinken_018",
+      "text": "Wähle eine Person. Ihr trinkt gemeinsam jeweils 1 Shot."
+    }
+  ],
+  "wissen": [
+    {
+      "id": "wissen_001",
+      "sourceId": 1,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Finger von Zoe würden vom Volumen her ungefähr in den Unterarm von Adrian passen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe",
+        "Adrian"
+      ],
+      "sourceRequirement": "Fingervolumen A und Unterarmvolumen B",
+      "active": false
+    },
+    {
+      "id": "wissen_002",
+      "sourceId": 2,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Daumenbreiten von Alexa entsprechen ungefähr dem Handgelenkumfang von Mimi?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa",
+        "Mimi"
+      ],
+      "sourceRequirement": "Daumenbreite A und Handgelenkumfang B",
+      "active": false
+    },
+    {
+      "id": "wissen_003",
+      "sourceId": 3,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie oft passt die Nasenlänge von Simon in die Fußlänge von Marcel?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Simon",
+        "Marcel"
+      ],
+      "sourceRequirement": "Nasenlänge A und Fußlänge B",
+      "active": false
+    },
+    {
+      "id": "wissen_005",
+      "sourceId": 5,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele kleine Finger von Marie entsprechen ungefähr der Länge des Oberschenkels von Jens?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie",
+        "Jens"
+      ],
+      "sourceRequirement": "Kleinfingerlänge A und Oberschenkellänge B",
+      "active": false
+    },
+    {
+      "id": "wissen_006",
+      "sourceId": 6,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Handflächen von Eve würden ungefähr auf den Rücken von Mimi passen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Eve",
+        "Mimi"
+      ],
+      "sourceRequirement": "Handflächenmaß A und Rückenfläche B",
+      "active": false
+    },
+    {
+      "id": "wissen_007",
+      "sourceId": 7,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie oft passt die Fußbreite von Zoe in die Hüftbreite von Marcel?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe",
+        "Marcel"
+      ],
+      "sourceRequirement": "Fußbreite A und Hüftbreite B",
+      "active": false
+    },
+    {
+      "id": "wissen_009",
+      "sourceId": 9,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Daumen von Zoe bräuchte man ungefähr, um einmal um den Oberarm von Jens zu kommen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe",
+        "Jens"
+      ],
+      "sourceRequirement": "Daumenbreite A und Oberarmumfang B",
+      "active": false
+    },
+    {
+      "id": "wissen_010",
+      "sourceId": 10,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Mittelfinger von Alexa entsprechen ungefähr der Schienbeinlänge von Marie?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa",
+        "Marie"
+      ],
+      "sourceRequirement": "Mittelfingerlänge A und Schienbeinlänge B",
+      "active": false
+    },
+    {
+      "id": "wissen_011",
+      "sourceId": 11,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Hände von Timo sind zusammen ungefähr so lang wie ein Bein von Adrian?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Timo",
+        "Adrian"
+      ],
+      "sourceRequirement": "Handlänge A und Beinlänge B",
+      "active": false
+    },
+    {
+      "id": "wissen_013",
+      "sourceId": 13,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Prozent länger ist der Fuß von Lukas als der von Josh?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "%",
+      "persons": [
+        "Lukas",
+        "Josh"
+      ],
+      "sourceRequirement": "Fußlängen A und B",
+      "active": false
+    },
+    {
+      "id": "wissen_014",
+      "sourceId": 14,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Zentimeter Unterschied liegen zwischen der Handspanne von Helene und Daniel?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Helene",
+        "Daniel"
+      ],
+      "sourceRequirement": "Handspannen A und B",
+      "active": false
+    },
+    {
+      "id": "wissen_015",
+      "sourceId": 15,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wenn Jens und Marcel ihre Unterarme hintereinanderlegen: Wie lang ist die Strecke?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Jens",
+        "Marcel"
+      ],
+      "sourceRequirement": "Unterarmlängen A und B",
+      "active": false
+    },
+    {
+      "id": "wissen_016",
+      "sourceId": 16,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Zeigefinger von Zoe passen ungefähr in den Kopfumfang von Alexa?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe",
+        "Alexa"
+      ],
+      "sourceRequirement": "Zeigefingerlänge A und Kopfumfang B",
+      "active": false
+    },
+    {
+      "id": "wissen_017",
+      "sourceId": 17,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viel länger ist die Armlänge von Eve als die Beinlänge von Simon – oder umgekehrt?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Eve",
+        "Simon"
+      ],
+      "sourceRequirement": "Armlänge A und Beinlänge B",
+      "active": false
+    },
+    {
+      "id": "wissen_018",
+      "sourceId": 18,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Handbreiten von Mimi passen ungefähr um die Taille von Zoe?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Mimi",
+        "Zoe"
+      ],
+      "sourceRequirement": "Handbreite A und Taillenumfang B",
+      "active": false
+    },
+    {
+      "id": "wissen_019",
+      "sourceId": 19,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wie viele Nasenbreiten von Marie passen ungefähr in die Schulterbreite von Mimi?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie",
+        "Mimi"
+      ],
+      "sourceRequirement": "Nasenbreite A und Schulterbreite B",
+      "active": false
+    },
+    {
+      "id": "wissen_020",
+      "sourceId": 20,
+      "category": "wissen",
+      "subtype": "Körpervergleich",
+      "question": "Wer hat im Verhältnis zur eigenen Handlänge den längeren Mittelfinger: Mona oder Zoe?",
+      "answerType": "single_choice",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Person",
+      "persons": [
+        "Mona",
+        "Zoe"
+      ],
+      "sourceRequirement": "Hand- und Mittelfingerlänge beider Personen",
+      "active": false,
+      "options": [
+        "Mona",
+        "Zoe"
+      ]
+    },
+    {
+      "id": "wissen_021",
+      "sourceId": 21,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele einzelne Socken besitzt Marie ungefähr?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Socken zählen oder schätzen",
+      "active": false
+    },
+    {
+      "id": "wissen_022",
+      "sourceId": 22,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Shotgläser besitzt Jens?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Shotgläser zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_023",
+      "sourceId": 23,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Teppiche liegen bei Mimi zuhause?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Mimi"
+      ],
+      "sourceRequirement": "Teppiche zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_024",
+      "sourceId": 24,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Tassen befinden sich in der Wohnung von Alexa?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Tassen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_025",
+      "sourceId": 25,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Kissen gibt es insgesamt bei Marie zuhause?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Kissen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_026",
+      "sourceId": 26,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Pflanzen besitzt Lukas?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Lukas"
+      ],
+      "sourceRequirement": "Pflanzen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_027",
+      "sourceId": 27,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Paar Schuhe besitzt Zoe?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Schuhpaare zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_028",
+      "sourceId": 28,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Jacken besitzt Simon?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Simon"
+      ],
+      "sourceRequirement": "Jacken zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_029",
+      "sourceId": 29,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Flaschen Alkohol stehen aktuell bei Marcel zuhause?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Flaschen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_030",
+      "sourceId": 30,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele verschiedene Gewürze besitzt Jens?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Gewürze zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_034",
+      "sourceId": 34,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Schubladen hat Alexa in der Küche?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Küchenschubladen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_035",
+      "sourceId": 35,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele verschiedene Trinkgläser besitzt Helene?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Helene"
+      ],
+      "sourceRequirement": "Trinkgläser zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_036",
+      "sourceId": 36,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Kerzen befinden sich bei Marie zuhause?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Kerzen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_037",
+      "sourceId": 37,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Bilder oder Poster hängen bei Timo (USA) an den Wänden?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Timo (USA)"
+      ],
+      "sourceRequirement": "Bilder/Poster zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_038",
+      "sourceId": 38,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Stühle gibt es in der Wohnung von Mine?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Mine"
+      ],
+      "sourceRequirement": "Stühle zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_039",
+      "sourceId": 39,
+      "category": "wissen",
+      "subtype": "Wohnung & Besitz",
+      "question": "Wie viele Fernbedienungen befinden sich bei Jens zuhause?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Fernbedienungen zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_041",
+      "sourceId": 41,
+      "category": "wissen",
+      "subtype": "Handy & Digital",
+      "question": "Wie viele Fotos befinden sich aktuell auf dem Handy von Alexa?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Fotoanzahl nachsehen",
+      "active": false
+    },
+    {
+      "id": "wissen_042",
+      "sourceId": 42,
+      "category": "wissen",
+      "subtype": "Handy & Digital",
+      "question": "Wie viele Apps sind auf dem Handy von Zoe installiert?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "App-Anzahl nachsehen",
+      "active": false
+    },
+    {
+      "id": "wissen_043",
+      "sourceId": 43,
+      "category": "wissen",
+      "subtype": "Handy & Digital",
+      "question": "Wie viele Wecker hat Simon auf dem Handy gespeichert?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Simon"
+      ],
+      "sourceRequirement": "Wecker zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_045",
+      "sourceId": 45,
+      "category": "wissen",
+      "subtype": "Handy & Digital",
+      "question": "Wie viele Kontakte sind im Handy von Joshi gespeichert?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Joshi"
+      ],
+      "sourceRequirement": "Kontakte nachsehen",
+      "active": false
+    },
+    {
+      "id": "wissen_047",
+      "sourceId": 47,
+      "category": "wissen",
+      "subtype": "Handy & Digital",
+      "question": "Wie viele Minuten Bildschirmzeit hatte Daniel gestern?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Minuten",
+      "persons": [
+        "Daniel"
+      ],
+      "sourceRequirement": "Bildschirmzeit nachsehen",
+      "active": false
+    },
+    {
+      "id": "wissen_056",
+      "sourceId": 56,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie weit kann Marie eine Münze vom Kopf nach vorne schleudern, ohne die Füße zu bewegen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Münze auf Kopf; Distanz messen",
+      "active": false
+    },
+    {
+      "id": "wissen_057",
+      "sourceId": 57,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie lange kann Zoe die Luft anhalten?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Sekunden",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Zeit stoppen",
+      "active": false
+    },
+    {
+      "id": "wissen_058",
+      "sourceId": 58,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie lange kann Alexa mit offenen Augen nicht blinzeln?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Sekunden",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Zeit stoppen",
+      "active": false
+    },
+    {
+      "id": "wissen_059",
+      "sourceId": 59,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Kniebeugen schafft Adrian in 30 Sekunden?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Adrian"
+      ],
+      "sourceRequirement": "30-Sekunden-Test",
+      "active": false
+    },
+    {
+      "id": "wissen_060",
+      "sourceId": 60,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie weit kann Lukas einen Kronkorken mit einem Finger schnipsen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Lukas"
+      ],
+      "sourceRequirement": "Distanz messen",
+      "active": false
+    },
+    {
+      "id": "wissen_061",
+      "sourceId": 61,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Münzen kann Marie gleichzeitig auf dem Handrücken balancieren?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Münzen stapeln/balancieren",
+      "active": false
+    },
+    {
+      "id": "wissen_062",
+      "sourceId": 62,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Spielkarten kann Marcel zwischen zwei Fingern halten, bevor sie herunterfallen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Karten testen",
+      "active": false
+    },
+    {
+      "id": "wissen_063",
+      "sourceId": 63,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie weit kann Alexa einen Wattepad mit genau einem Atemzug pusten?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Distanz messen",
+      "active": false
+    },
+    {
+      "id": "wissen_066",
+      "sourceId": 66,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Münzen kann Jens in 30 Sekunden zu einem Turm stapeln?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "30-Sekunden-Test",
+      "active": false
+    },
+    {
+      "id": "wissen_067",
+      "sourceId": 67,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie weit kann Mimi einen Papierflieger mit einem einzigen Wurf werfen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "m",
+      "persons": [
+        "Mimi"
+      ],
+      "sourceRequirement": "Papierflieger werfen und messen",
+      "active": false
+    },
+    {
+      "id": "wissen_068",
+      "sourceId": 68,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Büroklammern kann Eve in einer Minute zu einer Kette verbinden?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Eve"
+      ],
+      "sourceRequirement": "60-Sekunden-Test",
+      "active": false
+    },
+    {
+      "id": "wissen_070",
+      "sourceId": 70,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Tischtennisbälle kann Alexa gleichzeitig mit einer Hand transportieren?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Bälle aufnehmen und zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_071",
+      "sourceId": 71,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie weit kann Zoe eine Spielkarte nur durch Pusten über einen Tisch bewegen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "cm",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Distanz messen",
+      "active": false
+    },
+    {
+      "id": "wissen_072",
+      "sourceId": 72,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie oft kann Timo in 20 Sekunden mit einem Stift auf einen Punkt tippen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Timo"
+      ],
+      "sourceRequirement": "20-Sekunden-Test",
+      "active": false
+    },
+    {
+      "id": "wissen_075",
+      "sourceId": 75,
+      "category": "wissen",
+      "subtype": "Spontaner Test",
+      "question": "Wie viele Stifte kann Jens gleichzeitig zwischen den Fingern einer Hand festhalten?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Stifte testen",
+      "active": false
+    },
+    {
+      "id": "wissen_076",
+      "sourceId": 76,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele 0,33-l-Biere müsste Marcel rein rechnerisch trinken, damit reiner Alkohol 10 % des Blutvolumens ausmachen würde? Rein theoretisch – nicht praktisch testen.",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Körper-/Blutvolumen schätzen und theoretisch berechnen",
+      "active": false,
+      "note": "Nur theoretische Spaßfrage"
+    },
+    {
+      "id": "wissen_077",
+      "sourceId": 77,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen Chicken Nuggets entspricht ungefähr das Körpergewicht von Mimi?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Mimi"
+      ],
+      "sourceRequirement": "Gewicht A und Durchschnittsgewicht eines Nuggets",
+      "active": false
+    },
+    {
+      "id": "wissen_078",
+      "sourceId": 78,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen Gummibärchen entspricht ungefähr das Gewicht des Kopfes von Zoe?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Kopfgewicht schätzen und Gummibärchengewicht bestimmen",
+      "active": false
+    },
+    {
+      "id": "wissen_079",
+      "sourceId": 79,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen Packungen Butter entspricht ungefähr das Körpergewicht von Mona?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Mona"
+      ],
+      "sourceRequirement": "Gewicht A / Packungsgewicht Butter",
+      "active": false
+    },
+    {
+      "id": "wissen_080",
+      "sourceId": 80,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen Hühnereiern entspricht ungefähr das Körpergewicht von Marcel?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Gewicht A und mittleres Eigewicht",
+      "active": false
+    },
+    {
+      "id": "wissen_081",
+      "sourceId": 81,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Tischtennisbälle entsprechen ungefähr dem Volumen des Kopfes von Marcel?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Kopfvolumen schätzen und Ballvolumen",
+      "active": false
+    },
+    {
+      "id": "wissen_082",
+      "sourceId": 82,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Shotgläser entsprechen ungefähr dem Magenvolumen von Jens?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Magenvolumen schätzen und Shotglasvolumen",
+      "active": false
+    },
+    {
+      "id": "wissen_083",
+      "sourceId": 83,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Bierflaschen entsprechen ungefähr dem gesamten Blutvolumen von Simon?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Simon"
+      ],
+      "sourceRequirement": "Blutvolumen schätzen und Flaschenvolumen",
+      "active": false
+    },
+    {
+      "id": "wissen_084",
+      "sourceId": 84,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Würfelzucker entsprechen ungefähr dem Volumen des Gehirns von Alexa?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Gehirnvolumen und Würfelzuckervolumen",
+      "active": false
+    },
+    {
+      "id": "wissen_085",
+      "sourceId": 85,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen Cheeseburgern entspricht ungefähr das Körpergewicht von Lukas?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Lukas"
+      ],
+      "sourceRequirement": "Gewicht A und Burgergewicht",
+      "active": false
+    },
+    {
+      "id": "wissen_086",
+      "sourceId": 86,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele trockene Spaghetti ergeben zusammen ungefähr die Länge des Darms von Zoe?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Darmlänge schätzen und Spaghettilänge",
+      "active": false
+    },
+    {
+      "id": "wissen_088",
+      "sourceId": 88,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie vielen 1-Euro-Münzen entspricht ungefähr das Körpergewicht von Lukas?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Lukas"
+      ],
+      "sourceRequirement": "Gewicht A und Münzgewicht",
+      "active": false
+    },
+    {
+      "id": "wissen_089",
+      "sourceId": 89,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Marshmallows entsprechen ungefähr dem Volumen eines Schuhs von Timo?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Timo"
+      ],
+      "sourceRequirement": "Schuhvolumen und Marshmallowvolumen",
+      "active": false
+    },
+    {
+      "id": "wissen_090",
+      "sourceId": 90,
+      "category": "wissen",
+      "subtype": "Absurde Theorie",
+      "question": "Wie viele Pommes müsste Zoe essen, damit deren Gesamtgewicht 5 % ihres Körpergewichts entspricht?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Gewicht A und mittleres Pommesgewicht",
+      "active": false
+    },
+    {
+      "id": "wissen_091",
+      "sourceId": 91,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Länder hat Joshi bereits besucht?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Joshi"
+      ],
+      "sourceRequirement": "Länder zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_092",
+      "sourceId": 92,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele verschiedene Wohnungen oder Häuser hat Jens bisher bewohnt?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Wohnorte zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_093",
+      "sourceId": 93,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele verschiedene Jobs oder Nebenjobs hatte Alexa bisher?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Alexa"
+      ],
+      "sourceRequirement": "Jobs zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_094",
+      "sourceId": 94,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Haustiere hatte Marcel im Laufe ihres Lebens?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marcel"
+      ],
+      "sourceRequirement": "Haustiere zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_096",
+      "sourceId": 96,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Knochen hat Marie sich bisher gebrochen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Marie"
+      ],
+      "sourceRequirement": "Persönlich erfragen",
+      "active": false
+    },
+    {
+      "id": "wissen_097",
+      "sourceId": 97,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele verschiedene Haarfarben hatte Zoe bereits?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Zoe"
+      ],
+      "sourceRequirement": "Persönlich erfragen",
+      "active": false
+    },
+    {
+      "id": "wissen_098",
+      "sourceId": 98,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Fahrzeuge hat Adrian bisher selbst besessen?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Anzahl",
+      "persons": [
+        "Adrian"
+      ],
+      "sourceRequirement": "Fahrzeuge zählen",
+      "active": false
+    },
+    {
+      "id": "wissen_099",
+      "sourceId": 99,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Nächte hat Jens ungefähr im Zelt verbracht?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Nächte",
+      "persons": [
+        "Jens"
+      ],
+      "sourceRequirement": "Persönlich schätzen lassen",
+      "active": false
+    },
+    {
+      "id": "wissen_100",
+      "sourceId": 100,
+      "category": "wissen",
+      "subtype": "Persönlicher Funfact",
+      "question": "Wie viele Stunden war Lukas bisher am längsten am Stück wach?",
+      "answerType": "number",
+      "correctAnswer": "__NOCH_OFFEN__",
+      "answerStatus": "placeholder",
+      "unit": "Stunden",
+      "persons": [
+        "Lukas"
+      ],
+      "sourceRequirement": "Persönlich erfragen",
+      "active": false
+    }
+  ]
+}

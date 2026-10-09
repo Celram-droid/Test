@@ -1,120 +1,47 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Quizabend – Probeversion</title>
-  <style>
-    :root { font-family: system-ui, sans-serif; color: #f7f4ff; background: #121026; }
-    * { box-sizing: border-box; }
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: radial-gradient(circle at top left, #38306b, #121026 70%); }
-    main { width: min(100%, 680px); background: #24203f; border: 1px solid #59517b; border-radius: 24px; padding: clamp(22px, 5vw, 42px); box-shadow: 0 24px 70px #08061488; }
-    .eyebrow { color: #c7b6ff; font-size: .85rem; text-transform: uppercase; letter-spacing: .12em; font-weight: 700; }
-    h1 { margin: .3em 0 .15em; font-size: clamp(2rem, 6vw, 3rem); }
-    p { color: #ded9ed; line-height: 1.5; }
-    label { display: block; margin: 25px 0 8px; font-weight: 700; }
-    select, button { font: inherit; }
-    select { width: 100%; padding: 13px; color: #fff; background: #353054; border: 1px solid #8176aa; border-radius: 10px; }
-    .topline { display: flex; justify-content: space-between; gap: 12px; margin: 28px 0 12px; color: #c7b6ff; font-weight: 700; }
-    h2 { font-size: 1.35rem; line-height: 1.4; min-height: 3em; }
-    .answers { display: grid; gap: 10px; }
-    .answer { display: block; width: 100%; text-align: left; padding: 15px 17px; border-radius: 12px; border: 1px solid #746a99; background: #353052; color: white; cursor: pointer; }
-    .answer:hover:not(:disabled), .answer:focus-visible { background: #504675; outline: 2px solid #d3baff; }
-    .answer:disabled { cursor: default; }
-    .answer.correct { background: #175c48; border-color: #68e3ac; }
-    .answer.wrong { background: #713044; border-color: #ff9cae; }
-    #feedback { min-height: 2em; font-weight: 700; color: #fff; }
-    #next { width: 100%; padding: 14px 18px; border: 0; border-radius: 12px; background: #d9beff; color: #231a3d; font-weight: 800; cursor: pointer; }
-    #next:hover { background: #ead9ff; }
-    #next:disabled { opacity: .45; cursor: default; }
-    small { display: block; margin-top: 20px; color: #bcb4d0; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#17132f">
+<title>Quizabend Live</title>
+<style>
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f4ff;background:#121026}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#39316c,#121026 72%);padding:18px}main{max-width:920px;margin:auto}header{margin:8px 0 20px}h1{font-size:clamp(2rem,7vw,3.4rem);margin:0}h2,h3{margin-top:0}section,.panel{background:#262141;border:1px solid #635981;border-radius:20px;padding:22px;margin:14px 0;box-shadow:0 15px 35px #08061355}p{line-height:1.5;color:#ded9ed}.muted{color:#bdb5d2;font-size:.92rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stack{display:grid;gap:12px}label{font-weight:650;display:grid;gap:6px}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;padding:12px;color:#fff;background:#393354;border:1px solid #8c81ac;border-radius:10px}textarea{min-height:84px}button{border:0;border-radius:11px;background:#d8bcff;color:#221936;padding:12px 17px;font-weight:780;cursor:pointer}button:hover{background:#ead9ff}button:disabled{opacity:.46;cursor:default}.secondary{background:#504776;color:white}.danger{background:#9c4259;color:white}.success{background:#4b9b78;color:#fff}.hidden{display:none!important}.pill{display:inline-block;background:#494069;padding:6px 10px;border-radius:999px;margin:3px}.tag{display:inline-block;background:#3e375c;padding:4px 8px;border-radius:8px;margin:2px;font-size:.86rem}.box{padding:14px;background:#342d51;border-radius:12px;margin:10px 0}.code{font-size:2rem;font-weight:850;letter-spacing:.12em;color:#e6cdff}.notice{padding:12px;border-radius:10px;background:#314c44;color:#e6fff0}.error{background:#673348;color:#fff}.warn{background:#695528;color:#fff4d0}a{color:#dbbdff}hr{border:0;border-top:1px solid #5c5279;margin:22px 0}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.category-grid button{min-height:62px;font-size:1.02rem}.player-card{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.player-card.active{outline:2px solid #d8bcff}.player-meta{text-align:right}.answer-option{display:block;width:100%;margin:8px 0;text-align:left;background:#403857;color:white;border:1px solid #9789b7}.answer-option.selected{background:#175c48;border-color:#68e3ac}.rule-card{border-left:4px solid #d8bcff}.content-card{padding:18px;background:#332c51;border-radius:15px}.content-card h2{margin-bottom:8px}.big{font-size:1.15rem}.vote-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}@media(min-width:720px){.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:560px){body{padding:10px}section,.panel{padding:16px}.player-card{display:block}.player-meta{text-align:left;margin-top:6px}}
+</style>
 </head>
-<body>
-  <main>
-    <div class="eyebrow">Probewebseite</div>
-    <h1>Quizabend ✨</h1>
-    <p>Wähle einen Fragenpool und tippe auf eine Antwort. Du siehst sofort, ob sie richtig ist.</p>
-    <label for="pool">Fragenpool</label>
-    <select id="pool">
-      <option value="1">Pool 1 · Karten 2–8</option>
-      <option value="2">Pool 2 · Karten 9–Dame</option>
-      <option value="3">Pool 3 · König & Ass</option>
-    </select>
-    <div class="topline"><span id="category"></span><span id="score">0 richtig · 0 beantwortet</span></div>
-    <h2 id="question"></h2>
-    <div id="answers" class="answers"></div>
-    <p id="feedback" role="status" aria-live="polite"></p>
-    <button id="next" disabled>Nächste Frage →</button>
-    <small>Testfragen: Hier können später eure eigenen Fragen aus den drei Pools hinein.</small>
-  </main>
-  <script>
-    // Eigene Fragen hier ergänzen: Die Zahl bei answer ist die Position der richtigen Antwort (0 = erste).
-    const questions = {
-      1: [
-        { question: "Welcher Planet ist der Sonne am nächsten?", options: ["Venus", "Merkur", "Mars", "Erde"], answer: 1 },
-        { question: "Wie viele Minuten hat eine Stunde?", options: ["30", "45", "60", "90"], answer: 2 },
-        { question: "Welche Farbe entsteht aus Blau und Gelb?", options: ["Grün", "Orange", "Lila", "Rot"], answer: 0 }
-      ],
-      2: [
-        { question: "Was ist das chemische Symbol für Gold?", options: ["Ag", "Au", "Gd", "Go"], answer: 1 },
-        { question: "Welcher Ozean ist der größte?", options: ["Atlantik", "Indischer Ozean", "Pazifik", "Arktischer Ozean"], answer: 2 },
-        { question: "Wie viele Seiten hat ein Hexagon?", options: ["5", "6", "7", "8"], answer: 1 }
-      ],
-      3: [
-        { question: "Welches Element hat die Ordnungszahl 1?", options: ["Helium", "Sauerstoff", "Wasserstoff", "Kohlenstoff"], answer: 2 },
-        { question: "In welchem Jahr fiel die Berliner Mauer?", options: ["1987", "1989", "1991", "1993"], answer: 1 },
-        { question: "Wie heißt die Hauptstadt von Kanada?", options: ["Toronto", "Vancouver", "Montreal", "Ottawa"], answer: 3 }
-      ]
-    };
+<body><main>
+<header><div class="muted">Gemeinsam am eigenen Handy · reales Spielbrett</div><h1>Quizabend ✨</h1></header>
+<div id="message" class="hidden" role="status"></div>
 
-    const pool = document.querySelector("#pool");
-    const questionEl = document.querySelector("#question");
-    const answersEl = document.querySelector("#answers");
-    const feedback = document.querySelector("#feedback");
-    const next = document.querySelector("#next");
-    let remaining = [], current, correct = 0, answered = 0;
+<section id="home">
+  <h2>Spiel erstellen oder beitreten</h2>
+  <label>Dein Name<input id="playerName" maxlength="24" autocomplete="nickname" placeholder="z. B. Alexa"></label>
+  <div class="grid" style="margin-top:14px">
+    <div class="box"><h3>Neue Lobby</h3><p class="muted">Du spielst selbst normal mit. Es gibt keine feste Spielleitung.</p><button id="createRoomBtn">Neues Spiel erstellen</button></div>
+    <div class="box"><h3>Lobby beitreten</h3><label>Spielcode<input id="joinCode" maxlength="8" autocapitalize="characters" placeholder="z. B. ABCD2345"></label><button id="joinBtn" style="margin-top:10px">Beitreten</button></div>
+  </div>
+</section>
 
-    function resetPool() {
-      remaining = questions[pool.value].map((_, index) => index);
-      correct = answered = 0;
-      showQuestion();
-    }
-    function showQuestion() {
-      if (remaining.length === 0) remaining = questions[pool.value].map((_, index) => index);
-      const randomIndex = Math.floor(Math.random() * remaining.length);
-      current = questions[pool.value][remaining.splice(randomIndex, 1)[0]];
-      document.querySelector("#category").textContent = `Fragenpool ${pool.value}`;
-      document.querySelector("#score").textContent = `${correct} richtig · ${answered} beantwortet`;
-      questionEl.textContent = current.question;
-      feedback.textContent = "";
-      next.disabled = true;
-      answersEl.replaceChildren();
-      current.options.forEach((option, index) => {
-        const button = document.createElement("button");
-        button.className = "answer";
-        button.textContent = option;
-        button.addEventListener("click", () => checkAnswer(index));
-        answersEl.append(button);
-      });
-    }
-    function checkAnswer(index) {
-      if (!next.disabled) return;
-      answered++;
-      const isCorrect = index === current.answer;
-      if (isCorrect) correct++;
-      [...answersEl.children].forEach((button, i) => {
-        button.disabled = true;
-        if (i === current.answer) button.classList.add("correct");
-        if (i === index && !isCorrect) button.classList.add("wrong");
-      });
-      feedback.textContent = isCorrect ? "✅ Richtig!" : `❌ Leider falsch. Richtig ist: ${current.options[current.answer]}.`;
-      document.querySelector("#score").textContent = `${correct} richtig · ${answered} beantwortet`;
-      next.disabled = false;
-    }
-    pool.addEventListener("change", resetPool);
-    next.addEventListener("click", showQuestion);
-    resetPool();
-  </script>
-</body>
+<section id="room" class="hidden">
+  <div class="row" style="justify-content:space-between"><div><div class="muted">Spielcode</div><div class="code" id="roomCode"></div></div><button id="leaveLobbyBtn" class="secondary">Lobby verlassen</button></div>
+  <p>Beitrittslink: <a id="inviteLink" target="_blank" rel="noopener"></a></p>
+  <h3>Spieler</h3><div id="playerList"></div>
+  <div id="lobbyActions"></div>
+
+  <div id="gameArea" class="hidden">
+    <hr>
+    <div id="turnHeader"></div>
+    <div id="stateOverview" class="grid"></div>
+    <div id="categoryArea"></div>
+    <div id="currentArea"></div>
+    <div id="endTurnArea"></div>
+    <hr>
+    <details><summary><strong>Aktive Regeln</strong></summary><div id="activeRules"></div></details>
+    <details><summary><strong>Titel & Effekte</strong></summary><div id="titlesEffects"></div></details>
+  </div>
+</section>
+
+<footer class="muted">Die Webseite steuert Inhalte und gemeinsame Zustände. Die Spielfiguren bleiben auf eurem echten Spielbrett.</footer>
+</main>
+<script type="module" src="./app.js"></script></body>
 </html>
