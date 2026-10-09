@@ -12,7 +12,7 @@
       "wissen"
     ],
     "knowledgeQuestionsIncluded": true,
-    "note": "Die Wissensfragen sind enthalten. Da die Lösungen noch nicht vollständig vorliegen, steht correctAnswer derzeit auf '__NOCH_OFFEN__', answerStatus auf 'placeholder' und active auf false. Sobald eine Lösung eingetragen ist, kann active auf true gesetzt werden.",
+    "note": "Wissensfragen sind für das Ziehen aktiviert. Noch offene Lösungen werden in der Webseite als „Antwort kommt noch“ angezeigt.",
     "knowledgeQuestionCount": 76
   },
   "rollen": [
@@ -806,7 +806,7 @@
         "Adrian"
       ],
       "sourceRequirement": "Fingervolumen A und Unterarmvolumen B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_002",
@@ -823,7 +823,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Daumenbreite A und Handgelenkumfang B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_003",
@@ -840,7 +840,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Nasenlänge A und Fußlänge B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_005",
@@ -857,7 +857,7 @@
         "Jens"
       ],
       "sourceRequirement": "Kleinfingerlänge A und Oberschenkellänge B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_006",
@@ -874,7 +874,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Handflächenmaß A und Rückenfläche B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_007",
@@ -891,7 +891,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Fußbreite A und Hüftbreite B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_009",
@@ -908,7 +908,7 @@
         "Jens"
       ],
       "sourceRequirement": "Daumenbreite A und Oberarmumfang B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_010",
@@ -925,7 +925,7 @@
         "Marie"
       ],
       "sourceRequirement": "Mittelfingerlänge A und Schienbeinlänge B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_011",
@@ -942,7 +942,7 @@
         "Adrian"
       ],
       "sourceRequirement": "Handlänge A und Beinlänge B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_013",
@@ -959,7 +959,7 @@
         "Josh"
       ],
       "sourceRequirement": "Fußlängen A und B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_014",
@@ -976,7 +976,7 @@
         "Daniel"
       ],
       "sourceRequirement": "Handspannen A und B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_015",
@@ -993,7 +993,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Unterarmlängen A und B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_016",
@@ -1010,7 +1010,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Zeigefingerlänge A und Kopfumfang B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_017",
@@ -1027,7 +1027,7 @@
         "Simon"
       ],
       "sourceRequirement": "Armlänge A und Beinlänge B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_018",
@@ -1044,7 +1044,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Handbreite A und Taillenumfang B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_019",
@@ -1061,7 +1061,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Nasenbreite A und Schulterbreite B",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_020",
@@ -1078,7 +1078,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Hand- und Mittelfingerlänge beider Personen",
-      "active": false,
+      "active": true,
       "options": [
         "Mona",
         "Zoe"
@@ -1098,7 +1098,7 @@
         "Marie"
       ],
       "sourceRequirement": "Socken zählen oder schätzen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_022",
@@ -1114,7 +1114,7 @@
         "Jens"
       ],
       "sourceRequirement": "Shotgläser zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_023",
@@ -1130,7 +1130,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Teppiche zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_024",
@@ -1146,7 +1146,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Tassen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_025",
@@ -1162,7 +1162,7 @@
         "Marie"
       ],
       "sourceRequirement": "Kissen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_026",
@@ -1178,7 +1178,7 @@
         "Lukas"
       ],
       "sourceRequirement": "Pflanzen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_027",
@@ -1194,7 +1194,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Schuhpaare zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_028",
@@ -1210,7 +1210,7 @@
         "Simon"
       ],
       "sourceRequirement": "Jacken zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_029",
@@ -1226,7 +1226,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Flaschen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_030",
@@ -1242,7 +1242,7 @@
         "Jens"
       ],
       "sourceRequirement": "Gewürze zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_034",
@@ -1258,7 +1258,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Küchenschubladen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_035",
@@ -1274,7 +1274,7 @@
         "Helene"
       ],
       "sourceRequirement": "Trinkgläser zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_036",
@@ -1290,7 +1290,7 @@
         "Marie"
       ],
       "sourceRequirement": "Kerzen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_037",
@@ -1306,7 +1306,7 @@
         "Timo (USA)"
       ],
       "sourceRequirement": "Bilder/Poster zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_038",
@@ -1322,7 +1322,7 @@
         "Mine"
       ],
       "sourceRequirement": "Stühle zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_039",
@@ -1338,7 +1338,7 @@
         "Jens"
       ],
       "sourceRequirement": "Fernbedienungen zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_041",
@@ -1354,7 +1354,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Fotoanzahl nachsehen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_042",
@@ -1370,7 +1370,7 @@
         "Zoe"
       ],
       "sourceRequirement": "App-Anzahl nachsehen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_043",
@@ -1386,7 +1386,7 @@
         "Simon"
       ],
       "sourceRequirement": "Wecker zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_045",
@@ -1402,7 +1402,7 @@
         "Joshi"
       ],
       "sourceRequirement": "Kontakte nachsehen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_047",
@@ -1418,7 +1418,7 @@
         "Daniel"
       ],
       "sourceRequirement": "Bildschirmzeit nachsehen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_056",
@@ -1434,7 +1434,7 @@
         "Marie"
       ],
       "sourceRequirement": "Münze auf Kopf; Distanz messen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_057",
@@ -1450,7 +1450,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Zeit stoppen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_058",
@@ -1466,7 +1466,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Zeit stoppen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_059",
@@ -1482,7 +1482,7 @@
         "Adrian"
       ],
       "sourceRequirement": "30-Sekunden-Test",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_060",
@@ -1498,7 +1498,7 @@
         "Lukas"
       ],
       "sourceRequirement": "Distanz messen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_061",
@@ -1514,7 +1514,7 @@
         "Marie"
       ],
       "sourceRequirement": "Münzen stapeln/balancieren",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_062",
@@ -1530,7 +1530,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Karten testen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_063",
@@ -1546,7 +1546,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Distanz messen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_066",
@@ -1562,7 +1562,7 @@
         "Jens"
       ],
       "sourceRequirement": "30-Sekunden-Test",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_067",
@@ -1578,7 +1578,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Papierflieger werfen und messen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_068",
@@ -1594,7 +1594,7 @@
         "Eve"
       ],
       "sourceRequirement": "60-Sekunden-Test",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_070",
@@ -1610,7 +1610,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Bälle aufnehmen und zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_071",
@@ -1626,7 +1626,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Distanz messen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_072",
@@ -1642,7 +1642,7 @@
         "Timo"
       ],
       "sourceRequirement": "20-Sekunden-Test",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_075",
@@ -1658,7 +1658,7 @@
         "Jens"
       ],
       "sourceRequirement": "Stifte testen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_076",
@@ -1674,7 +1674,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Körper-/Blutvolumen schätzen und theoretisch berechnen",
-      "active": false,
+      "active": true,
       "note": "Nur theoretische Spaßfrage"
     },
     {
@@ -1691,7 +1691,7 @@
         "Mimi"
       ],
       "sourceRequirement": "Gewicht A und Durchschnittsgewicht eines Nuggets",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_078",
@@ -1707,7 +1707,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Kopfgewicht schätzen und Gummibärchengewicht bestimmen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_079",
@@ -1723,7 +1723,7 @@
         "Mona"
       ],
       "sourceRequirement": "Gewicht A / Packungsgewicht Butter",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_080",
@@ -1739,7 +1739,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Gewicht A und mittleres Eigewicht",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_081",
@@ -1755,7 +1755,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Kopfvolumen schätzen und Ballvolumen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_082",
@@ -1771,7 +1771,7 @@
         "Jens"
       ],
       "sourceRequirement": "Magenvolumen schätzen und Shotglasvolumen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_083",
@@ -1787,7 +1787,7 @@
         "Simon"
       ],
       "sourceRequirement": "Blutvolumen schätzen und Flaschenvolumen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_084",
@@ -1803,7 +1803,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Gehirnvolumen und Würfelzuckervolumen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_085",
@@ -1819,7 +1819,7 @@
         "Lukas"
       ],
       "sourceRequirement": "Gewicht A und Burgergewicht",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_086",
@@ -1835,7 +1835,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Darmlänge schätzen und Spaghettilänge",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_088",
@@ -1851,7 +1851,7 @@
         "Lukas"
       ],
       "sourceRequirement": "Gewicht A und Münzgewicht",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_089",
@@ -1867,7 +1867,7 @@
         "Timo"
       ],
       "sourceRequirement": "Schuhvolumen und Marshmallowvolumen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_090",
@@ -1883,7 +1883,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Gewicht A und mittleres Pommesgewicht",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_091",
@@ -1899,7 +1899,7 @@
         "Joshi"
       ],
       "sourceRequirement": "Länder zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_092",
@@ -1915,7 +1915,7 @@
         "Jens"
       ],
       "sourceRequirement": "Wohnorte zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_093",
@@ -1931,7 +1931,7 @@
         "Alexa"
       ],
       "sourceRequirement": "Jobs zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_094",
@@ -1947,7 +1947,7 @@
         "Marcel"
       ],
       "sourceRequirement": "Haustiere zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_096",
@@ -1963,7 +1963,7 @@
         "Marie"
       ],
       "sourceRequirement": "Persönlich erfragen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_097",
@@ -1979,7 +1979,7 @@
         "Zoe"
       ],
       "sourceRequirement": "Persönlich erfragen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_098",
@@ -1995,7 +1995,7 @@
         "Adrian"
       ],
       "sourceRequirement": "Fahrzeuge zählen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_099",
@@ -2011,7 +2011,7 @@
         "Jens"
       ],
       "sourceRequirement": "Persönlich schätzen lassen",
-      "active": false
+      "active": true
     },
     {
       "id": "wissen_100",
@@ -2027,7 +2027,7 @@
         "Lukas"
       ],
       "sourceRequirement": "Persönlich erfragen",
-      "active": false
+      "active": true
     }
   ]
 }
