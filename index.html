@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#17132f">
 <title>Quizabend</title>
 <style>
-:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f4ff;background:#121026}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#39316c,#121026 72%);padding:18px}main{max-width:920px;margin:auto}header{margin:8px 0 20px}h1{font-size:clamp(2rem,7vw,3.4rem);margin:0}h2,h3{margin-top:0}section{background:#262141;border:1px solid #635981;border-radius:20px;padding:22px;margin:14px 0;box-shadow:0 15px 35px #08061355}p{line-height:1.5;color:#ded9ed}.muted{color:#bdb5d2;font-size:.92rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stack{display:grid;gap:12px}label{font-weight:650;display:grid;gap:6px}input,button{font:inherit}input{width:100%;padding:12px;color:#fff;background:#393354;border:1px solid #8c81ac;border-radius:10px}button{border:0;border-radius:11px;background:#d8bcff;color:#221936;padding:12px 17px;font-weight:780;cursor:pointer}button:hover{background:#ead9ff}button:disabled{opacity:.46;cursor:default}.secondary{background:#504776;color:white}.danger{background:#9c4259;color:white}.hidden{display:none!important}.box{padding:14px;background:#342d51;border-radius:12px;margin:10px 0}.code{font-size:2rem;font-weight:850;letter-spacing:.12em;color:#e6cdff}.notice{padding:12px;border-radius:10px;background:#314c44;color:#e6fff0}.error{background:#673348;color:#fff}.warn{background:#695528;color:#fff4d0}a{color:#dbbdff}hr{border:0;border-top:1px solid #5c5279;margin:22px 0}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.category-grid button{min-height:78px;font-size:1.05rem;border:2px solid transparent;box-shadow:0 8px 20px #08061335;transition:transform .12s ease,filter .12s ease}.category-grid button:hover{transform:translateY(-2px);filter:brightness(1.08)}.category-wissen{background:#b8dcff;color:#15233a;border-color:#d9ecff!important}.category-duell{background:#ffc0c9;color:#421a22;border-color:#ffe0e5!important}.category-trinken{background:#bdebd0;color:#173524;border-color:#ddf8e8!important}.category-regel{background:#ffe0a6;color:#3f2b08;border-color:#fff0cf!important}.category-rolle{background:#dec8ff;color:#2c1849;border-color:#efe3ff!important}.category-ereignis{background:#c9d0ff;color:#1b2350;border-color:#e3e7ff!important}.player-card{padding:12px 14px;background:#342d51;border-radius:12px;margin:8px 0}.content-card{padding:24px;border-radius:18px;margin:16px 0;border:2px solid #8c81ac;box-shadow:0 12px 28px #08061355}.content-card h2{font-size:1.65rem;margin-bottom:8px}.content-card .big{font-size:1.18rem;color:#fff}.card-wissen{background:#203c59;border-color:#83bff1}.card-duell{background:#572b36;border-color:#e58fa0}.card-trinken{background:#204938;border-color:#7bd0a1}.card-regel{background:#58451f;border-color:#ddb65f}.card-rolle{background:#44305d;border-color:#bd91ee}.card-ereignis{background:#30375f;border-color:#929de9}.answer-box{padding:16px 18px;border-radius:12px;background:#263f35;border:2px solid #70c899;color:#edfff5;font-weight:800;font-size:1.08rem;margin:12px 0}.actions{display:flex;gap:10px;flex-wrap:wrap}.full{width:100%}@media(min-width:720px){.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:560px){body{padding:10px}section{padding:16px}.actions button{flex:1 1 100%}}
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f7f4ff;background:#121026}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#39316c,#121026 72%);padding:18px}main{max-width:920px;margin:auto}header{margin:8px 0 20px}h1{font-size:clamp(2rem,7vw,3.4rem);margin:0}h2,h3{margin-top:0}section{background:#262141;border:1px solid #635981;border-radius:20px;padding:22px;margin:14px 0;box-shadow:0 15px 35px #08061355}p{line-height:1.5;color:#ded9ed}.muted{color:#bdb5d2;font-size:.92rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stack{display:grid;gap:12px}label{font-weight:650;display:grid;gap:6px}input,button{font:inherit}input{width:100%;padding:12px;color:#fff;background:#393354;border:1px solid #8c81ac;border-radius:10px}button{border:0;border-radius:11px;background:#d8bcff;color:#221936;padding:12px 17px;font-weight:780;cursor:pointer}button:hover{background:#ead9ff}button:disabled{opacity:.46;cursor:default}.secondary{background:#504776;color:white}.danger{background:#9c4259;color:white}.hidden{display:none!important}.box{padding:14px;background:#342d51;border-radius:12px;margin:10px 0}.code{font-size:2rem;font-weight:850;letter-spacing:.12em;color:#e6cdff}.notice{padding:12px;border-radius:10px;background:#314c44;color:#e6fff0}.error{background:#673348;color:#fff}.warn{background:#695528;color:#fff4d0}a{color:#dbbdff}hr{border:0;border-top:1px solid #5c5279;margin:22px 0}.category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.category-grid button{min-height:78px;font-size:1.05rem;border:2px solid transparent;box-shadow:0 8px 20px #08061335;transition:transform .12s ease,filter .12s ease}.category-grid button:hover{transform:translateY(-2px);filter:brightness(1.08)}.category-wissen{background:#b8dcff;color:#15233a;border-color:#d9ecff!important}.category-duell{background:#ffc0c9;color:#421a22;border-color:#ffe0e5!important}.category-trinken{background:#bdebd0;color:#173524;border-color:#ddf8e8!important}.category-regel{background:#ffe0a6;color:#3f2b08;border-color:#fff0cf!important}.category-rolle{background:#dec8ff;color:#2c1849;border-color:#efe3ff!important}.category-ereignis{background:#c9d0ff;color:#1b2350;border-color:#e3e7ff!important}.player-card{padding:12px 14px;background:#342d51;border-radius:12px;margin:8px 0}.content-card{padding:24px;border-radius:18px;margin:16px 0;border:2px solid #8c81ac;box-shadow:0 12px 28px #08061355}.content-card h2{font-size:1.65rem;margin-bottom:8px}.content-card .big{font-size:1.18rem;color:#fff}.card-wissen{background:#203c59;border-color:#83bff1}.card-duell{background:#572b36;border-color:#e58fa0}.card-trinken{background:#204938;border-color:#7bd0a1}.card-regel{background:#58451f;border-color:#ddb65f}.card-rolle{background:#44305d;border-color:#bd91ee}.card-ereignis{background:#30375f;border-color:#929de9}.answer-box{padding:16px 18px;border-radius:12px;background:#263f35;border:2px solid #70c899;color:#edfff5;font-weight:800;font-size:1.08rem;margin:12px 0}.actions{display:flex;gap:10px;flex-wrap:wrap}.full{width:100%}.lobby-panel{margin-top:28px;border:2px solid #776d98;background:#1d1937;box-shadow:0 12px 30px #08061355}.lobby-panel h2{margin-bottom:16px}.lobby-divider{border:0;border-top:2px solid #5c5279;margin:18px 0}.lobby-buttons{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}@media(min-width:640px){.lobby-buttons{grid-template-columns:1fr 1fr}}@media(min-width:720px){.category-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:560px){body{padding:10px}section{padding:16px}.actions button{flex:1 1 100%}}
 </style>
 </head>
 <body><main>
@@ -22,23 +22,27 @@
   </div>
 </section>
 
-<section id="room" class="hidden">
-  <div class="row" style="justify-content:space-between;align-items:flex-start">
-    <div><div class="muted">Spielcode</div><div class="code" id="roomCode"></div></div>
-    <div class="actions"><button id="leaveLobbyBtn" class="secondary">Lobby verlassen</button><button id="endLobbyBtn" class="danger">Lobby für alle beenden</button></div>
-  </div>
-  <p id="inviteWrap">Beitrittslink: <a id="inviteLink" target="_blank" rel="noopener"></a></p>
-  <h3>Mitspieler</h3><div id="playerList"></div>
-  <div id="lobbyActions"></div>
-
-  <div id="gameArea" class="hidden">
-    <hr>
+<div id="room" class="hidden">
+  <section id="gameArea" class="hidden">
     <div id="categoryArea"></div>
     <div id="currentArea"></div>
-  </div>
-</section>
+  </section>
 
-<footer class="muted">Das Spielbrett, die Reihenfolge, aktive Regeln und Effekte verwaltet ihr selbst. Gezogene Rollen werden beim jeweiligen Namen angezeigt; ansonsten zieht die Webseite nur die passende Karte.</footer>
+  <section class="lobby-panel">
+    <h2>Lobby</h2>
+    <div><div class="muted">Spielcode</div><div class="code" id="roomCode"></div></div>
+    <p id="inviteWrap">Beitrittslink: <a id="inviteLink" target="_blank" rel="noopener"></a></p>
+    <hr class="lobby-divider">
+    <h3>Mitspieler</h3>
+    <div id="playerList"></div>
+    <div id="lobbyActions"></div>
+    <hr class="lobby-divider">
+    <div class="lobby-buttons">
+      <button id="leaveLobbyBtn" class="secondary">Lobby verlassen</button>
+      <button id="endLobbyBtn" class="danger">Lobby für alle beenden</button>
+    </div>
+  </section>
+</div>
 </main>
 <script type="module" src="./app.js"></script></body>
 </html>
