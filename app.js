@@ -245,6 +245,7 @@ function setRoomView(view) {
 
 function renderRoom() {
   renderPlayers();
+  renderGamePlayers();
   const status = roomState.meta?.status || 'lobby';
   const inLobby = status === 'lobby';
 
@@ -282,6 +283,27 @@ function renderPlayers() {
       kick.onclick = action(() => kickPlayer(uid));
       card.append(kick);
     }
+    el.append(card);
+  }
+}
+
+function renderGamePlayers() {
+  const panel = $('gamePlayersPanel');
+  const el = $('gamePlayerList');
+  const playing = roomState?.meta?.status === 'playing';
+  show('gamePlayersPanel', playing);
+  if (!panel || !el) return;
+
+  el.replaceChildren();
+  const entries = Object.entries(roomState?.players || {}).sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0));
+  if (!entries.length) {
+    el.textContent = 'Noch niemand in der Lobby.';
+    return;
+  }
+
+  for (const [uid, player] of entries) {
+    const roleText = player.role?.title ? ` · 👑 ${player.role.title}` : '';
+    const card = node('div', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`, 'game-player-card');
     el.append(card);
   }
 }
