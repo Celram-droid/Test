@@ -139,6 +139,7 @@ function openRoom(code) {
   link.searchParams.set('room', code);
   $('inviteLink').href = link.href;
   $('inviteLink').textContent = link.href;
+  renderInviteQr(link.href);
 
   unsubscribeRoom = onValue(ref(db, `rooms/${code}`), snapshot => {
     roomState = snapshot.val();
@@ -157,6 +158,28 @@ function openRoom(code) {
     }
     renderRoom();
   }, error => alertUser(`Firebase-Fehler: ${error.message}`, true));
+}
+
+
+function renderInviteQr(url) {
+  const target = $('qrCode');
+  if (!target) return;
+  target.replaceChildren();
+  if (!window.LocalQR?.render) {
+    target.textContent = 'QR-Code konnte nicht geladen werden.';
+    return;
+  }
+  try {
+    window.LocalQR.render(target, url, {
+      size: 190,
+      dark: '#17132f',
+      light: '#ffffff',
+      label: `QR-Code für Lobby ${roomCode}`
+    });
+  } catch (error) {
+    console.error(error);
+    target.textContent = 'QR-Code konnte nicht erstellt werden.';
+  }
 }
 
 function goHome() {
