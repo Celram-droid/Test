@@ -89,6 +89,42 @@ function activeKnowledge() {
   return DATA.wissen || [];
 }
 
+function sortedPlayers() {
+  return Object.entries(roomState?.players || {}).sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0));
+}
+
+function rolePayload(item) {
+  return item ? { id: item.id, title: item.title } : null;
+}
+
+function roleInfo(role) {
+  if (!role?.id) return null;
+  return contentBy('rolle', role.id);
+}
+
+function ruleInfo(ruleId) {
+  return contentBy('regel', ruleId);
+}
+
+function showInfoDialog(kicker, title, text) {
+  const dialog = $('infoDialog');
+  $('infoDialogKicker').textContent = kicker || '';
+  $('infoDialogTitle').textContent = title || '';
+  $('infoDialogText').textContent = text || 'Keine weitere Erklärung vorhanden.';
+  if (typeof dialog.showModal === 'function') dialog.showModal();
+  else dialog.setAttribute('open', '');
+}
+
+function showRoleInfo(role) {
+  const info = roleInfo(role);
+  showInfoDialog('Titel / Rolle', info?.title || role?.title || 'Rolle', info?.text || 'Keine weitere Erklärung vorhanden.');
+}
+
+function showRuleInfo(ruleId) {
+  const info = ruleInfo(ruleId);
+  showInfoDialog('Aktive Regel', info?.title || 'Regel', info?.text || 'Keine weitere Erklärung vorhanden.');
+}
+
 async function createRoom() {
   const name = $('playerName').value.trim();
   if (!name || name.length > 24) throw new Error('Bitte einen Namen mit maximal 24 Zeichen eingeben.');
@@ -246,6 +282,7 @@ function setRoomView(view) {
 function renderRoom() {
   renderPlayers();
   renderGamePlayers();
+  renderActiveRules();
   const status = roomState.meta?.status || 'lobby';
   const inLobby = status === 'lobby';
 
@@ -266,15 +303,23 @@ function renderRoom() {
 function renderPlayers() {
   const el = $('playerList');
   el.replaceChildren();
-  const entries = Object.entries(roomState?.players || {}).sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0));
+  const entries = sortedPlayers();
   if (!entries.length) {
     el.textContent = 'Noch niemand in der Lobby.';
     return;
   }
   for (const [uid, player] of entries) {
-    const roleText = player.role?.title ? ` · 👑 ${player.role.title}` : '';
     const card = node('div', '', 'player-card');
-    card.append(node('span', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`));
+    const nameWrap = node('span', '');
+    nameWrap.append(document.createTextNode(`${player.name}${uid === myUid() ? ' (du)' : ''}`));
+    if (player.role?.title) {
+      nameWrap.append(document.createTextNode(' · '));
+      const roleButton = node('button', `👑 ${player.role.title}`, 'role-inline');
+      roleButton.type = 'button';
+      roleButton.onclick = () => showRoleInfo(player.role);
+      nameWrap.append(roleButton);
+    }
+    card.append(nameWrap);
     if (uid !== myUid()) {
       const kick = node('button', '✕', 'danger kick-btn');
       kick.type = 'button';
@@ -295,16 +340,55 @@ function renderGamePlayers() {
   if (!panel || !el) return;
 
   el.replaceChildren();
-  const entries = Object.entries(roomState?.players || {}).sort((a, b) => (a[1].joinedAt || 0) - (b[1].joinedAt || 0));
+  const entries = sortedPlayers();
   if (!entries.length) {
     el.textContent = 'Noch niemand in der Lobby.';
     return;
   }
 
   for (const [uid, player] of entries) {
-    const roleText = player.role?.title ? ` · 👑 ${player.role.title}` : '';
-    const card = node('div', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`, 'game-player-card');
+    const card = node('div', '', 'game-player-card');
+    card.append(document.createTextNode(`${player.name}${uid === myUid() ? ' (du)' : ''}`));
+    if (player.role?.title) {
+      card.append(document.createTextNode(' · '));
+      const roleButton = node('button', `👑 ${player.role.title}`, 'role-inline');
+      roleButton.type = 'button';
+      roleButton.onclick = () => showRoleInfo(player.role);
+      card.append(roleButton);
+    }
     el.append(card);
+  }
+}
+
+function renderActiveRules() {
+  const panel = $('activeRulesPanel');
+  const el = $('activeRuleList');
+  const playing = roomState?.meta?.status === 'playing';
+  show('activeRulesPanel', playing);
+  if (!panel || !el) return;
+
+  el.replaceChildren();
+  const entries = Object.entries(roomState?.activeRules || {}).sort((a, b) => (a[1].addedAt || 0) - (b[1].addedAt || 0));
+  if (!entries.length) {
+    el.append(node('div', 'Keine aktiven Regeln.', 'muted'));
+    return;
+  }
+
+  for (const [ruleId, rule] of entries) {
+    const row = node('div', '', 'active-rule-card');
+    const info = node('button', `📜 ${rule.title || ruleInfo(ruleId)?.title || 'Regel'}`, 'info-link');
+    info.type = 'button';
+    info.onclick = () => showRuleInfo(ruleId);
+    const removeButton = node('button', '✕', 'danger rule-remove-btn');
+    removeButton.type = 'button';
+    removeButton.title = 'Regel deaktivieren';
+    removeButton.setAttribute('aria-label', `${rule.title || 'Regel'} deaktivieren`);
+    removeButton.onclick = action(async () => {
+      if (!confirm(`Regel „${rule.title || 'Regel'}“ wirklich deaktivieren?`)) return;
+      await remove(ref(db, `rooms/${roomCode}/activeRules/${ruleId}`));
+    });
+    row.append(info, removeButton);
+    el.append(row);
   }
 }
 
@@ -384,14 +468,192 @@ async function drawCard(category) {
   });
   if (!result.committed) throw new Error('Jemand anderes hat gerade bereits eine Karte gezogen.');
 
+  // Regeln werden dauerhaft als aktiv gespeichert, bis jemand sie mit X deaktiviert
+  // oder ein passendes Ereignis sie entfernt/ersetzt.
+  if (category === 'regel') {
+    await set(ref(db, `rooms/${roomCode}/activeRules/${item.id}`), {
+      id: item.id,
+      title: item.title,
+      addedBy: myUid(),
+      addedAt: now()
+    });
+  }
+
   // Eine gezogene Rolle gehört der Person, die sie auf ihrem Handy gezogen hat.
   // Eine spätere Rolle ersetzt automatisch die bisherige Rolle dieser Person.
   if (category === 'rolle') {
-    await set(ref(db, `rooms/${roomCode}/players/${myUid()}/role`), {
-      id: item.id,
-      title: item.title
-    });
+    await set(ref(db, `rooms/${roomCode}/players/${myUid()}/role`), rolePayload(item));
   }
+}
+
+async function finishEventAction(resultText, updates = {}) {
+  updates['current/eventResolved'] = true;
+  updates['current/eventResult'] = resultText;
+  await update(ref(db, `rooms/${roomCode}`), updates);
+}
+
+function selectControl(labelText, options, placeholder = 'Person auswählen') {
+  const wrap = node('label', '');
+  wrap.append(document.createTextNode(labelText));
+  const select = document.createElement('select');
+  const first = document.createElement('option');
+  first.value = '';
+  first.textContent = placeholder;
+  select.append(first);
+  for (const option of options) {
+    const el = document.createElement('option');
+    el.value = option.value;
+    el.textContent = option.label;
+    select.append(el);
+  }
+  wrap.append(select);
+  return { wrap, select };
+}
+
+function eventActor(current) {
+  const uid = current?.startedBy;
+  return { uid, player: roomState?.players?.[uid] || null };
+}
+
+async function assignRandomRole(uid) {
+  const item = randomItem(DATA.rollen || []);
+  if (!item) throw new Error('Es sind keine Rollen vorhanden.');
+  await finishEventAction(`Neuer Titel: ${item.title}`, {
+    [`players/${uid}/role`]: rolePayload(item)
+  });
+}
+
+function renderEventActions(el, current, content) {
+  const actor = eventActor(current);
+  const actorName = actor.player?.name || 'Die Person';
+  const box = node('div', '', 'event-actions');
+
+  if (!actor.uid || !actor.player) {
+    box.append(node('div', 'Die Person, die dieses Ereignis gezogen hat, ist nicht mehr in der Lobby. Rollenänderungen können deshalb nicht automatisch ausgeführt werden.', 'notice warn'));
+    el.append(box);
+    return;
+  }
+
+  if (current.eventResolved) {
+    box.append(node('div', current.eventResult || 'Ereignis wurde umgesetzt.', 'notice'));
+    el.append(box);
+    return;
+  }
+
+  const allPlayers = sortedPlayers();
+  const others = allPlayers.filter(([uid]) => uid !== actor.uid);
+  const activeRules = Object.entries(roomState?.activeRules || {});
+  let used = true;
+
+  if (content.id === 'ereignis_025_titel_verlieren') {
+    box.append(node('div', `Betroffen: ${actorName}`, 'muted'));
+    const button = node('button', 'Titel jetzt entfernen');
+    button.disabled = !actor.player?.role;
+    button.onclick = action(() => finishEventAction(`${actorName} hat keinen Titel mehr.`, {
+      [`players/${actor.uid}/role`]: null
+    }));
+    box.append(button);
+    if (!actor.player?.role) box.append(node('div', `${actorName} hat aktuell keinen Titel.`, 'muted'));
+  } else if (content.id === 'ereignis_026_titel_tauschen') {
+    box.append(node('div', `Titel von ${actorName} mit einer anderen Person tauschen.`, 'muted'));
+    const { wrap, select } = selectControl('Mit wem?', others.map(([uid, p]) => ({ value: uid, label: `${p.name}${p.role?.title ? ` · ${p.role.title}` : ' · ohne Titel'}` })));
+    const button = node('button', 'Titel tauschen');
+    button.onclick = action(async () => {
+      const targetUid = select.value;
+      if (!targetUid) throw new Error('Bitte eine Person auswählen.');
+      const target = roomState.players[targetUid];
+      const updates = {
+        [`players/${actor.uid}/role`]: target.role || null,
+        [`players/${targetUid}/role`]: actor.player?.role || null
+      };
+      await finishEventAction(`${actorName} und ${target.name} haben ihre Titel getauscht.`, updates);
+    });
+    box.append(wrap, button);
+  } else if (content.id === 'ereignis_027_titel_klauen') {
+    const withRole = others.filter(([, p]) => p.role?.title);
+    box.append(node('div', `${actorName} übernimmt den Titel einer anderen Person.`, 'muted'));
+    const { wrap, select } = selectControl('Titel klauen von', withRole.map(([uid, p]) => ({ value: uid, label: `${p.name} · ${p.role.title}` })), 'Person mit Titel auswählen');
+    const button = node('button', 'Titel klauen');
+    button.disabled = !withRole.length;
+    button.onclick = action(async () => {
+      const targetUid = select.value;
+      if (!targetUid) throw new Error('Bitte eine Person auswählen.');
+      const target = roomState.players[targetUid];
+      await finishEventAction(`${actorName} hat den Titel „${target.role.title}“ von ${target.name} übernommen.`, {
+        [`players/${actor.uid}/role`]: target.role,
+        [`players/${targetUid}/role`]: null
+      });
+    });
+    box.append(wrap, button);
+    if (!withRole.length) box.append(node('div', 'Aktuell hat keine andere Person einen Titel.', 'muted'));
+  } else if (content.id === 'ereignis_028_titelroulette') {
+    const holders = allPlayers.filter(([, p]) => p.role?.title);
+    box.append(node('div', 'Wählt für jede Person mit Titel aus, wer links von ihr sitzt. So kann die Webseite die Titel korrekt weitergeben.', 'muted'));
+    const mappings = [];
+    for (const [sourceUid, source] of holders) {
+      const { wrap, select } = selectControl(`Titel von ${source.name} →`, holders.filter(([uid]) => uid !== sourceUid).map(([uid, p]) => ({ value: uid, label: p.name })), 'Person links auswählen');
+      mappings.push({ sourceUid, source, select });
+      box.append(wrap);
+    }
+    const button = node('button', 'Titelroulette ausführen');
+    button.disabled = holders.length < 2;
+    button.onclick = action(async () => {
+      const targets = mappings.map(x => x.select.value);
+      if (targets.some(v => !v)) throw new Error('Bitte für jede Person auswählen, wer links sitzt.');
+      if (new Set(targets).size !== targets.length) throw new Error('Jede Person darf nur einmal als linke Person ausgewählt werden.');
+      const updates = {};
+      for (const mapping of mappings) updates[`players/${mapping.select.value}/role`] = mapping.source.role;
+      await finishEventAction('Titelroulette wurde ausgeführt.', updates);
+    });
+    box.append(button);
+    if (holders.length < 2) box.append(node('div', 'Für das Titelroulette brauchen mindestens zwei Personen einen Titel.', 'muted'));
+  } else if (content.id === 'ereignis_029_regel_loschen') {
+    const { wrap, select } = selectControl('Welche Regel?', activeRules.map(([id, r]) => ({ value: id, label: r.title || ruleInfo(id)?.title || id })), 'Aktive Regel auswählen');
+    const button = node('button', 'Regel entfernen');
+    button.disabled = !activeRules.length;
+    button.onclick = action(async () => {
+      if (!select.value) throw new Error('Bitte eine Regel auswählen.');
+      const title = roomState.activeRules[select.value]?.title || ruleInfo(select.value)?.title || 'Regel';
+      await finishEventAction(`Regel „${title}“ wurde entfernt.`, { [`activeRules/${select.value}`]: null });
+    });
+    box.append(wrap, button);
+    if (!activeRules.length) box.append(node('div', 'Aktuell ist keine Regel aktiv.', 'muted'));
+  } else if (content.id === 'ereignis_030_regelwechsel') {
+    const button = node('button', 'Regelwechsel ausführen');
+    button.disabled = !activeRules.length;
+    button.onclick = action(async () => {
+      if (!activeRules.length) throw new Error('Aktuell ist keine Regel aktiv.');
+      const [oldId, oldRule] = randomItem(activeRules);
+      const blocked = new Set(activeRules.map(([id]) => id));
+      const candidates = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId);
+      const replacement = randomItem(candidates.length ? candidates : (DATA.regeln || []).filter(rule => rule.id !== oldId));
+      if (!replacement) throw new Error('Es konnte keine neue Regel gefunden werden.');
+      await finishEventAction(`„${oldRule.title}“ wurde durch „${replacement.title}“ ersetzt.`, {
+        [`activeRules/${oldId}`]: null,
+        [`activeRules/${replacement.id}`]: { id: replacement.id, title: replacement.title, addedBy: myUid(), addedAt: now() }
+      });
+    });
+    box.append(button);
+    if (!activeRules.length) box.append(node('div', 'Aktuell ist keine Regel aktiv.', 'muted'));
+  } else if (content.id === 'ereignis_036_gruppenentscheidung' || content.id === 'ereignis_047_freie_wahl') {
+    box.append(node('div', `Nur anklicken, wenn ${actorName} die Option „neuer Titel“ wählt.`, 'muted'));
+    const button = node('button', 'Neuen Titel ziehen');
+    button.onclick = action(() => assignRandomRole(actor.uid));
+    box.append(button);
+  } else if (content.id === 'ereignis_048_opfer') {
+    box.append(node('div', `Nur anklicken, wenn ${actorName} für die 2 Felder den aktuellen Titel abgibt.`, 'muted'));
+    const button = node('button', 'Titel abgeben');
+    button.disabled = !actor.player?.role;
+    button.onclick = action(() => finishEventAction(`${actorName} hat den Titel abgegeben.`, {
+      [`players/${actor.uid}/role`]: null
+    }));
+    box.append(button);
+    if (!actor.player?.role) box.append(node('div', `${actorName} hat aktuell keinen Titel.`, 'muted'));
+  } else {
+    used = false;
+  }
+
+  if (used) el.append(box);
 }
 
 function contentCard(title, text, kicker = '', category = '') {
@@ -434,12 +696,17 @@ function renderCurrentCard() {
   } else if (current.category === 'regel') {
     el.append(contentCard(content.title, content.text, 'Regel', 'regel'));
     if ((content.variables || []).length) {
-      el.append(node('div', 'Legt die benötigten Werte oder Personen gemeinsam fest. Die Webseite speichert die Regel nicht.', 'notice'));
+      el.append(node('div', 'Legt die benötigten Werte oder Personen gemeinsam fest. Die Regel bleibt anschließend unter „Aktive Regeln“ sichtbar.', 'notice'));
+    } else {
+      el.append(node('div', 'Diese Regel ist jetzt aktiv und bleibt unter „Aktive Regeln“ sichtbar.', 'notice'));
     }
   } else if (current.category === 'rolle') {
     el.append(contentCard(content.title, content.text, 'Titel / Rolle', 'rolle'));
+    const owner = roomState.players?.[current.startedBy]?.name || 'Die ziehende Person';
+    el.append(node('div', `Der Titel ist bei ${owner} hinterlegt.`, 'notice'));
   } else if (current.category === 'ereignis') {
     el.append(contentCard(content.title, content.text, 'Ereignis', 'ereignis'));
+    renderEventActions(el, current, content);
   }
 
   appendDoneButton(el);
@@ -461,6 +728,10 @@ $('leaveLobbyBtn').onclick = action(leaveLobby);
 $('endLobbyBtn').onclick = action(endLobby);
 $('gameTabBtn').onclick = () => setRoomView('game');
 $('settingsTabBtn').onclick = () => setRoomView('settings');
+$('infoDialogClose').onclick = () => $('infoDialog').close();
+$('infoDialog').addEventListener('click', event => {
+  if (event.target === $('infoDialog')) $('infoDialog').close();
+});
 
 try {
   await loadContent();
