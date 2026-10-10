@@ -20,6 +20,8 @@ let app, auth, db;
 let roomCode = '';
 let roomState = null;
 let unsubscribeRoom = null;
+let activeView = 'settings';
+let previousRoomStatus = '';
 
 function alertUser(message, error = false) {
   const el = $('message');
@@ -126,6 +128,8 @@ async function joinRoom() {
 
 function openRoom(code) {
   roomCode = code;
+  activeView = 'settings';
+  previousRoomStatus = '';
   if (unsubscribeRoom) unsubscribeRoom();
   show('home', false);
   show('room', true);
@@ -153,6 +157,8 @@ function goHome() {
   unsubscribeRoom = null;
   roomCode = '';
   roomState = null;
+  activeView = 'settings';
+  previousRoomStatus = '';
   show('home', true);
   show('room', false);
 }
@@ -182,13 +188,38 @@ async function startGame() {
   await update(ref(db, `rooms/${roomCode}/meta`), { status: 'playing' });
 }
 
+function setRoomView(view) {
+  const playing = roomState?.meta?.status === 'playing';
+  if (view === 'game' && !playing) view = 'settings';
+  activeView = view;
+
+  show('gameView', activeView === 'game');
+  show('settingsView', activeView === 'settings');
+
+  const gameButton = $('gameTabBtn');
+  const settingsButton = $('settingsTabBtn');
+  gameButton.disabled = !playing;
+  gameButton.classList.toggle('active', activeView === 'game');
+  settingsButton.classList.toggle('active', activeView === 'settings');
+}
+
 function renderRoom() {
   renderPlayers();
-  const inLobby = roomState.meta?.status === 'lobby';
+  const status = roomState.meta?.status || 'lobby';
+  const inLobby = status === 'lobby';
+
   renderLobbyActions(inLobby);
   $('inviteWrap').classList.toggle('hidden', !inLobby);
   show('gameArea', !inLobby);
   if (!inLobby) renderGame();
+
+  // In der Lobby stehen die Einstellungen im Vordergrund. Sobald das Spiel
+  // startet, wechselt die Oberfläche automatisch auf die Spielansicht.
+  if (!previousRoomStatus) activeView = inLobby ? 'settings' : 'game';
+  if (previousRoomStatus === 'lobby' && status === 'playing') activeView = 'game';
+  if (inLobby) activeView = 'settings';
+  previousRoomStatus = status;
+  setRoomView(activeView);
 }
 
 function renderPlayers() {
@@ -356,6 +387,8 @@ $('createRoomBtn').onclick = action(createRoom);
 $('joinBtn').onclick = action(joinRoom);
 $('leaveLobbyBtn').onclick = action(leaveLobby);
 $('endLobbyBtn').onclick = action(endLobby);
+$('gameTabBtn').onclick = () => setRoomView('game');
+$('settingsTabBtn').onclick = () => setRoomView('settings');
 
 try {
   await loadContent();
