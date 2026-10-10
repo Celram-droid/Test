@@ -120,9 +120,11 @@ function showRoleInfo(role) {
   showInfoDialog('Titel / Rolle', info?.title || role?.title || 'Rolle', info?.text || 'Keine weitere Erklärung vorhanden.');
 }
 
-function showRuleInfo(ruleId) {
-  const info = ruleInfo(ruleId);
-  showInfoDialog('Aktive Regel', info?.title || 'Regel', info?.text || 'Keine weitere Erklärung vorhanden.');
+function showRuleInfo(ruleId, ruleData = null) {
+  const info = ruleInfo(ruleData?.sourceId || ruleId);
+  const title = ruleData?.title || info?.title || 'Regel';
+  const text = ruleData?.text || info?.text || 'Keine weitere Erklärung vorhanden.';
+  showInfoDialog('Aktive Regel', title, text);
 }
 
 async function createRoom() {
@@ -378,7 +380,7 @@ function renderActiveRules() {
     const row = node('div', '', 'active-rule-card');
     const info = node('button', `📜 ${rule.title || ruleInfo(ruleId)?.title || 'Regel'}`, 'info-link');
     info.type = 'button';
-    info.onclick = () => showRuleInfo(ruleId);
+    info.onclick = () => showRuleInfo(ruleId, rule);
     const removeButton = node('button', '✕', 'danger rule-remove-btn');
     removeButton.type = 'button';
     removeButton.title = 'Regel deaktivieren';
@@ -470,7 +472,7 @@ async function drawCard(category) {
 
   // Regeln werden dauerhaft als aktiv gespeichert, bis jemand sie mit X deaktiviert
   // oder ein passendes Ereignis sie entfernt/ersetzt.
-  if (category === 'regel') {
+  if (category === 'regel' && item.id !== 'regel_035_erstelle_eine_eigene_regel') {
     await set(ref(db, `rooms/${roomCode}/activeRules/${item.id}`), {
       id: item.id,
       title: item.title,
@@ -625,8 +627,9 @@ function renderEventActions(el, current, content) {
       if (!activeRules.length) throw new Error('Aktuell ist keine Regel aktiv.');
       const [oldId, oldRule] = randomItem(activeRules);
       const blocked = new Set(activeRules.map(([id]) => id));
-      const candidates = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId);
-      const replacement = randomItem(candidates.length ? candidates : (DATA.regeln || []).filter(rule => rule.id !== oldId));
+      const candidates = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel');
+      const fallback = (DATA.regeln || []).filter(rule => rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel');
+      const replacement = randomItem(candidates.length ? candidates : fallback);
       if (!replacement) throw new Error('Es konnte keine neue Regel gefunden werden.');
       await finishEventAction(`„${oldRule.title}“ wurde durch „${replacement.title}“ ersetzt.`, {
         [`activeRules/${oldId}`]: null,
@@ -695,7 +698,59 @@ function renderCurrentCard() {
     el.append(contentCard('Trinken', content.text, '', 'trinken'));
   } else if (current.category === 'regel') {
     el.append(contentCard(content.title, content.text, 'Regel', 'regel'));
-    if ((content.variables || []).length) {
+    if (content.id === 'regel_035_erstelle_eine_eigene_regel') {
+      const editor = node('div', '', 'custom-rule-editor');
+      const titleLabel = node('label', 'Titel der eigenen Regel');
+      const titleInput = document.createElement('input');
+      titleInput.type = 'text';
+      titleInput.maxLength = 120;
+      titleInput.placeholder = 'z. B. Niemand darf Vornamen sagen';
+      titleInput.value = current.customRuleTitle || '';
+      titleLabel.append(titleInput);
+
+      const textLabel = node('label', 'Beschreibung');
+      const textInput = document.createElement('textarea');
+      textInput.maxLength = 500;
+      textInput.rows = 4;
+      textInput.placeholder = 'Beschreibe kurz, was ab jetzt gilt.';
+      textInput.value = current.customRuleText || '';
+      textLabel.append(textInput);
+
+      const saveButton = node('button', current.customRuleKey ? 'Änderungen speichern' : 'Eigene Regel speichern');
+      const savedNotice = node('div', '', 'muted');
+      if (current.customRuleKey) savedNotice.textContent = 'Diese eigene Regel ist bereits aktiv. Du kannst Titel und Beschreibung hier noch ändern.';
+
+      saveButton.onclick = action(async () => {
+        const title = titleInput.value.trim();
+        const text = textInput.value.trim();
+        if (!title) throw new Error('Bitte einen Titel für die eigene Regel eingeben.');
+        if (!text) throw new Error('Bitte eine Beschreibung für die eigene Regel eingeben.');
+
+        const key = current.customRuleKey || `custom_${current.id}`;
+        const previousKey = current.customRuleKey || '';
+        const ruleData = {
+          id: key,
+          sourceId: content.id,
+          title,
+          text,
+          custom: true,
+          addedBy: current.startedBy || myUid(),
+          addedAt: current.customRuleAddedAt || now()
+        };
+        const updates = {
+          [`activeRules/${key}`]: ruleData,
+          'current/customRuleKey': key,
+          'current/customRuleTitle': title,
+          'current/customRuleText': text,
+          'current/customRuleAddedAt': ruleData.addedAt
+        };
+        if (previousKey && previousKey !== key) updates[`activeRules/${previousKey}`] = null;
+        await update(ref(db, `rooms/${roomCode}`), updates);
+      });
+
+      editor.append(titleLabel, textLabel, saveButton, savedNotice);
+      el.append(editor);
+    } else if ((content.variables || []).length) {
       el.append(node('div', 'Legt die benötigten Werte oder Personen gemeinsam fest. Die Regel bleibt anschließend unter „Aktive Regeln“ sichtbar.', 'notice'));
     } else {
       el.append(node('div', 'Diese Regel ist jetzt aktiv und bleibt unter „Aktive Regeln“ sichtbar.', 'notice'));
@@ -715,6 +770,12 @@ function renderCurrentCard() {
 function appendDoneButton(el) {
   const done = node('button', 'Fertig → zurück zu den Kategorien');
   done.className = 'full';
+  const current = roomState?.current;
+  const needsCustomRule = current?.category === 'regel'
+    && current?.contentId === 'regel_035_erstelle_eine_eigene_regel'
+    && !current?.customRuleKey;
+  done.disabled = needsCustomRule;
+  if (needsCustomRule) done.title = 'Speichere zuerst deine eigene Regel.';
   done.onclick = action(async () => {
     if (!roomState?.players?.[myUid()]) throw new Error('Du bist nicht Teil dieser Lobby.');
     await remove(ref(db, `rooms/${roomCode}/current`));
