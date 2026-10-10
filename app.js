@@ -119,7 +119,7 @@ async function joinRoom() {
 
   const meta = (await get(ref(db, `rooms/${code}/meta`))).val();
   if (!meta) throw new Error('Diese Lobby wurde nicht gefunden.');
-  if (meta.status !== 'lobby') throw new Error('Dieses Spiel wurde bereits gestartet.');
+  if (!['lobby', 'playing'].includes(meta.status)) throw new Error('Dieser Lobby kann derzeit nicht beigetreten werden.');
 
   await set(ref(db, `rooms/${code}/players/${myUid()}`), { name, joinedAt: now() });
   saveSession(code, name);
@@ -148,6 +148,13 @@ function openRoom(code) {
       goHome();
       return;
     }
+    if (!roomState.players?.[myUid()]) {
+      clearSession();
+      alertUser('Du wurdest aus der Lobby entfernt.', false);
+      signOut(auth).catch(() => {});
+      goHome();
+      return;
+    }
     renderRoom();
   }, error => alertUser(`Firebase-Fehler: ${error.message}`, true));
 }
@@ -164,12 +171,22 @@ function goHome() {
 }
 
 async function leaveLobby() {
+  if (unsubscribeRoom) { unsubscribeRoom(); unsubscribeRoom = null; }
   if (roomState?.players?.[myUid()]) {
     await remove(ref(db, `rooms/${roomCode}/players/${myUid()}`));
   }
   clearSession();
   await signOut(auth).catch(() => {});
   goHome();
+}
+
+async function kickPlayer(uid) {
+  if (!roomState?.players?.[myUid()]) throw new Error('Du bist nicht Teil dieser Lobby.');
+  if (uid === myUid()) throw new Error('Nutze für dich selbst „Lobby verlassen“.');
+  const player = roomState?.players?.[uid];
+  if (!player) return;
+  if (!confirm(`${player.name} wirklich aus der Lobby entfernen?`)) return;
+  await remove(ref(db, `rooms/${roomCode}/players/${uid}`));
 }
 
 async function endLobby() {
@@ -209,7 +226,7 @@ function renderRoom() {
   const inLobby = status === 'lobby';
 
   renderLobbyActions(inLobby);
-  $('inviteWrap').classList.toggle('hidden', !inLobby);
+  $('inviteWrap').classList.remove('hidden');
   show('gameArea', !inLobby);
   if (!inLobby) renderGame();
 
@@ -232,7 +249,17 @@ function renderPlayers() {
   }
   for (const [uid, player] of entries) {
     const roleText = player.role?.title ? ` · 👑 ${player.role.title}` : '';
-    el.append(node('div', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`, 'player-card'));
+    const card = node('div', '', 'player-card');
+    card.append(node('span', `${player.name}${uid === myUid() ? ' (du)' : ''}${roleText}`));
+    if (uid !== myUid()) {
+      const kick = node('button', '✕', 'danger kick-btn');
+      kick.type = 'button';
+      kick.title = `${player.name} aus der Lobby entfernen`;
+      kick.setAttribute('aria-label', `${player.name} aus der Lobby entfernen`);
+      kick.onclick = action(() => kickPlayer(uid));
+      card.append(kick);
+    }
+    el.append(card);
   }
 }
 
