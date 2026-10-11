@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Quizspiel – App-Inhalte",
-    "version": "1.1",
+    "version": "1.2",
     "language": "de",
     "categoriesIncluded": [
       "rollen",
@@ -12,7 +12,7 @@
       "wissen"
     ],
     "knowledgeQuestionsIncluded": true,
-    "note": "Wissensfragen sind für das Ziehen aktiviert. Noch offene Lösungen werden in der Webseite als „Antwort kommt noch“ angezeigt.",
+    "note": "Wissensfragen werden von allen aktuellen Mitspielern beantwortet; offene Lösungen erscheinen weiterhin als „Antwort kommt noch“. Inhalte werden pro Kategorie ohne Wiederholung gezogen, bis der jeweilige Pool einmal vollständig durchlaufen wurde.",
     "knowledgeQuestionCount": 76
   },
   "rollen": [
@@ -84,7 +84,12 @@
     {
       "id": "rolle_014_barkeeper",
       "title": "Barkeeper",
-      "text": "Wenn jemand sein Glas nachfüllt, darfst du 1 Schluck verteilen."
+      "text": "Wenn jemand sein Glas nachfüllt, darfst du 1 Shot verteilen."
+    },
+    {
+      "id": "rolle_015_daumenmeister",
+      "title": "Daumenmeister",
+      "text": "Du darfst jederzeit unauffällig den Daumen auf den Tisch legen. Alle anderen müssen es nachmachen. Wer zuletzt reagiert, bekommt die Strafe."
     }
   ],
   "regeln": [
@@ -237,13 +242,7 @@
     {
       "id": "regel_024_spiegel",
       "title": "Spiegel",
-      "text": "Die Person links von dir muss deine Trinkbewegung nachmachen.",
-      "variables": []
-    },
-    {
-      "id": "regel_025_daumenmaster",
-      "title": "Daumenmaster",
-      "text": "Eine bestimmte Person darf jederzeit unauffällig den Daumen auf den Tisch legen. Alle anderen müssen es nachmachen. Wer zuletzt reagiert, bekommt die Strafe.",
+      "text": "Du musst die Trinkbewegung von der Person rechts von dir nachmachen.",
       "variables": []
     },
     {
@@ -304,8 +303,8 @@
     },
     {
       "id": "regel_034_keine_vornamen_plus_keine_pronomen",
-      "title": "Keine Vornamen + keine Pronomen",
-      "text": "Vornamen und Pronomen dürfen nicht verwendet werden.",
+      "title": "Keine Vornamen",
+      "text": "Vornamen dürfen nicht verwendet werden.",
       "variables": []
     },
     {
@@ -481,7 +480,7 @@
     {
       "id": "ereignis_033_revanche",
       "title": "Revanche",
-      "text": "Wenn du dein nächstes Duell verlierst, darfst du sofort ein zweites Duell verlangen."
+      "text": "Du darfst eine Revanche mit einem neuen Duell verlangen."
     },
     {
       "id": "ereignis_034_wissensbonus",
@@ -641,12 +640,6 @@
         "mode": "1v1"
       },
       {
-        "id": "duell_1v1_010_wissensduell",
-        "title": "Wissensduell",
-        "text": "Ihr bekommt dieselbe Schätzfrage und gebt gleichzeitig eure Antwort ein. Wer näher an der richtigen Lösung liegt, gewinnt.",
-        "mode": "1v1"
-      },
-      {
         "id": "duell_1v1_011_bottle_flip",
         "title": "Bottle Flip",
         "text": "Wer zuerst 3 erfolgreiche Bottle Flips schafft, gewinnt.",
@@ -656,12 +649,6 @@
         "id": "duell_1v1_012_bierdeckel_fangen",
         "title": "Bierdeckel-Fangen",
         "text": "Legt jeweils einen Bierdeckel auf euren Ellenbogen. Schlagt den Arm nach unten und versucht, den Bierdeckel mit derselben Hand zu fangen. Wer zuerst 3 erfolgreiche Fänge schafft, gewinnt.",
-        "mode": "1v1"
-      },
-      {
-        "id": "duell_1v1_013_munze_ins_glas_schnippen",
-        "title": "Münze ins Glas schnippen",
-        "text": "Legt eine Münze auf den Tisch und versucht abwechselnd, sie mit dem Finger in ein Glas zu schnippen. Wer zuerst trifft, gewinnt.",
         "mode": "1v1"
       },
       {
