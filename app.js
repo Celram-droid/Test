@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import { getAuth, signInAnonymously, signOut } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-import { getDatabase, ref, get, set, update, remove, onValue, runTransaction } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js';
+import { getDatabase, ref, get, set, update, remove, onValue, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js';
 import { firebaseConfig } from './firebase-config.js';
 
 const $ = id => document.getElementById(id);
@@ -24,7 +24,14 @@ let activeView = 'settings';
 let previousRoomStatus = '';
 let duelTimerInterval = null;
 let serverTimeOffset = 0;
+let serverClockReady = false;
 const serverNow = () => Date.now() + serverTimeOffset;
+
+async function syncServerClock() {
+  const snapshot = await get(ref(db, '.info/serverTimeOffset'));
+  serverTimeOffset = Number(snapshot.val() || 0);
+  serverClockReady = true;
+}
 
 function alertUser(message, error = false) {
   const el = $('message');
@@ -735,10 +742,24 @@ function renderDuelTimer(el, current, seconds) {
   if (!seconds) return;
   const box = node('div', '', 'duel-timer');
   const label = node('div', '', 'timer-display');
-  const start = node('button', current.timerEnd ? 'Timer neu starten' : `Timer starten (${seconds} s)`, 'secondary');
+  const hasStarted = Boolean(current.timerStartedAt || current.timerEnd);
+  const start = node('button', hasStarted ? 'Timer neu starten' : `Timer starten (${seconds} s)`, 'secondary');
+
+  const getEnd = () => {
+    const live = roomState?.current || current;
+    const startedAt = Number(live.timerStartedAt || 0);
+    const duration = Number(live.timerDuration || seconds);
+    if (startedAt) return startedAt + duration * 1000;
+    // Kompatibilität mit eventuell noch vorhandenen alten Timer-Daten.
+    return Number(live.timerEnd || 0);
+  };
 
   const paint = () => {
-    const end = Number(roomState?.current?.timerEnd || current.timerEnd || 0);
+    const end = getEnd();
+    if (!serverClockReady && end) {
+      label.textContent = 'Timer synchronisiert …';
+      return;
+    }
     const remainingMs = end ? Math.max(0, end - serverNow()) : seconds * 1000;
     const remaining = Math.ceil(remainingMs / 1000);
     const min = Math.floor(remaining / 60);
@@ -749,16 +770,19 @@ function renderDuelTimer(el, current, seconds) {
   };
 
   start.onclick = action(async () => {
+    if (!serverClockReady) await syncServerClock();
     await update(ref(db, `rooms/${roomCode}/current`), {
       timerDuration: seconds,
-      timerEnd: Date.now() + Number((await get(ref(db, '.info/serverTimeOffset'))).val() || serverTimeOffset || 0) + seconds * 1000
+      timerStartedAt: serverTimestamp(),
+      timerEnd: null
     });
   });
 
   box.append(label, start);
   el.append(box);
   paint();
-  if (current.timerEnd && Number(current.timerEnd) > serverNow()) {
+  const end = getEnd();
+  if (end && (!serverClockReady || end > serverNow())) {
     duelTimerInterval = setInterval(paint, 250);
   }
 }
@@ -1040,8 +1064,10 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getDatabase(app);
+  await syncServerClock();
   onValue(ref(db, '.info/serverTimeOffset'), snapshot => {
     serverTimeOffset = Number(snapshot.val() || 0);
+    serverClockReady = true;
   });
   await auth.authStateReady();
 
