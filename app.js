@@ -1,6 +1,6 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
 import { getAuth, signInAnonymously, signOut } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-import { getDatabase, ref, get, set, update, remove, onValue, runTransaction, serverTimestamp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js';
+import { getDatabase, ref, get, set, update, remove, onValue, runTransaction } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js';
 import { firebaseConfig } from './firebase-config.js';
 
 const $ = id => document.getElementById(id);
@@ -23,15 +23,8 @@ let unsubscribeRoom = null;
 let activeView = 'settings';
 let previousRoomStatus = '';
 let duelTimerInterval = null;
-let serverTimeOffset = 0;
-let serverClockReady = false;
-const serverNow = () => Date.now() + serverTimeOffset;
-
-async function syncServerClock() {
-  const snapshot = await get(ref(db, '.info/serverTimeOffset'));
-  serverTimeOffset = Number(snapshot.val() || 0);
-  serverClockReady = true;
-}
+let duelTimerDriverInterval = null;
+let duelTimerDriverRunId = '';
 
 function alertUser(message, error = false) {
   const el = $('message');
@@ -143,6 +136,49 @@ function extractTimerSeconds(text = '') {
 function clearDuelTimer() {
   if (duelTimerInterval) clearInterval(duelTimerInterval);
   duelTimerInterval = null;
+}
+
+function stopDuelTimerDriver() {
+  if (duelTimerDriverInterval) clearInterval(duelTimerDriverInterval);
+  duelTimerDriverInterval = null;
+  duelTimerDriverRunId = '';
+}
+
+async function tickDuelTimer(runId) {
+  const live = roomState?.current;
+  if (!roomCode || !live || live.category !== 'duell' || live.timerRunId !== runId || !live.timerRunning) {
+    stopDuelTimerDriver();
+    return;
+  }
+
+  const result = await runTransaction(
+    ref(db, `rooms/${roomCode}/current/timerRemaining`),
+    value => {
+      const remaining = Number(value);
+      if (!Number.isFinite(remaining) || remaining <= 0) return 0;
+      return remaining - 1;
+    },
+    { applyLocally: false }
+  );
+
+  const remaining = Number(result.snapshot.val() || 0);
+  if (remaining <= 0) {
+    await update(ref(db, `rooms/${roomCode}/current`), { timerRunning: false });
+    stopDuelTimerDriver();
+  }
+}
+
+function startDuelTimerDriver(runId) {
+  stopDuelTimerDriver();
+  duelTimerDriverRunId = runId;
+  duelTimerDriverInterval = setInterval(() => {
+    if (duelTimerDriverRunId !== runId) return;
+    tickDuelTimer(runId).catch(error => {
+      console.error(error);
+      alertUser(`Timer-Fehler: ${error.message || error}`, true);
+      stopDuelTimerDriver();
+    });
+  }, 1000);
 }
 
 function sortedPlayers() {
@@ -277,6 +313,7 @@ function renderInviteQr(url) {
 }
 
 function goHome() {
+  stopDuelTimerDriver();
   if (unsubscribeRoom) unsubscribeRoom();
   unsubscribeRoom = null;
   roomCode = '';
@@ -742,49 +779,34 @@ function renderDuelTimer(el, current, seconds) {
   if (!seconds) return;
   const box = node('div', '', 'duel-timer');
   const label = node('div', '', 'timer-display');
-  const hasStarted = Boolean(current.timerStartedAt || current.timerEnd);
+  const hasStarted = Boolean(current.timerRunId);
   const start = node('button', hasStarted ? 'Timer neu starten' : `Timer starten (${seconds} s)`, 'secondary');
 
-  const getEnd = () => {
-    const live = roomState?.current || current;
-    const startedAt = Number(live.timerStartedAt || 0);
-    const duration = Number(live.timerDuration || seconds);
-    if (startedAt) return startedAt + duration * 1000;
-    // Kompatibilität mit eventuell noch vorhandenen alten Timer-Daten.
-    return Number(live.timerEnd || 0);
-  };
-
-  const paint = () => {
-    const end = getEnd();
-    if (!serverClockReady && end) {
-      label.textContent = 'Timer synchronisiert …';
-      return;
-    }
-    const remainingMs = end ? Math.max(0, end - serverNow()) : seconds * 1000;
-    const remaining = Math.ceil(remainingMs / 1000);
-    const min = Math.floor(remaining / 60);
-    const sec = remaining % 60;
-    label.textContent = end && remaining <= 0 ? 'Zeit abgelaufen!' : `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
-    label.classList.toggle('timer-finished', Boolean(end && remaining <= 0));
-    if (end && remaining <= 0) clearDuelTimer();
-  };
+  const rawRemaining = Number(current.timerRemaining);
+  const remaining = Number.isFinite(rawRemaining) ? Math.max(0, rawRemaining) : seconds;
+  const min = Math.floor(remaining / 60);
+  const sec = remaining % 60;
+  label.textContent = hasStarted && remaining <= 0
+    ? 'Zeit abgelaufen!'
+    : `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+  label.classList.toggle('timer-finished', Boolean(hasStarted && remaining <= 0));
 
   start.onclick = action(async () => {
-    if (!serverClockReady) await syncServerClock();
+    const runId = cardId();
     await update(ref(db, `rooms/${roomCode}/current`), {
       timerDuration: seconds,
-      timerStartedAt: serverTimestamp(),
+      timerRemaining: seconds,
+      timerRunning: true,
+      timerRunId: runId,
+      timerOwner: myUid(),
+      timerStartedAt: null,
       timerEnd: null
     });
+    startDuelTimerDriver(runId);
   });
 
   box.append(label, start);
   el.append(box);
-  paint();
-  const end = getEnd();
-  if (end && (!serverClockReady || end > serverNow())) {
-    duelTimerInterval = setInterval(paint, 250);
-  }
 }
 
 function renderKnowledgeQuestion(el, current, content) {
@@ -1064,11 +1086,6 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getDatabase(app);
-  await syncServerClock();
-  onValue(ref(db, '.info/serverTimeOffset'), snapshot => {
-    serverTimeOffset = Number(snapshot.val() || 0);
-    serverClockReady = true;
-  });
   await auth.authStateReady();
 
   const invite = new URLSearchParams(location.search).get('room');
