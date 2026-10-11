@@ -237,6 +237,17 @@ function showRuleInfo(ruleId, ruleData = null) {
   showInfoDialog('Aktive Regel', title, text);
 }
 
+
+function setInviteEntryMode(inviteCode) {
+  const isInvite = Boolean(inviteCode);
+  show('createLobbyBox', !isInvite);
+  show('joinCodeLabel', !isInvite);
+  show('inviteJoinHint', isInvite);
+  if ($('homeTitle')) $('homeTitle').textContent = isInvite ? 'Lobby beitreten' : 'Spiel erstellen oder beitreten';
+  if ($('joinLobbyTitle')) $('joinLobbyTitle').textContent = isInvite ? 'Name eingeben' : 'Lobby beitreten';
+  if ($('joinBtn')) $('joinBtn').textContent = isInvite ? 'Lobby beitreten' : 'Beitreten';
+}
+
 async function createRoom() {
   const name = $('playerName').value.trim();
   if (!name || name.length > 24) throw new Error('Bitte einen Namen mit maximal 24 Zeichen eingeben.');
@@ -1117,10 +1128,14 @@ try {
   const inviteCode = normalizeRoomCode(inviteRaw);
   if (inviteCode) {
     $('joinCode').value = inviteCode;
+    setInviteEntryMode(inviteCode);
   } else if (inviteRaw) {
     // Ungültige alte/kaputte QR-Links dürfen niemals in einen Firebase-Pfad gelangen.
     const cleanUrl = new URL(window.location.pathname, window.location.origin);
     history.replaceState(null, '', cleanUrl.href);
+    setInviteEntryMode('');
+  } else {
+    setInviteEntryMode('');
   }
 
   const session = getSession();
