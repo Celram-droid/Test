@@ -23,6 +23,8 @@ let unsubscribeRoom = null;
 let activeView = 'settings';
 let previousRoomStatus = '';
 let duelTimerInterval = null;
+let serverTimeOffset = 0;
+const serverNow = () => Date.now() + serverTimeOffset;
 
 function alertUser(message, error = false) {
   const el = $('message');
@@ -737,7 +739,7 @@ function renderDuelTimer(el, current, seconds) {
 
   const paint = () => {
     const end = Number(roomState?.current?.timerEnd || current.timerEnd || 0);
-    const remainingMs = end ? Math.max(0, end - Date.now()) : seconds * 1000;
+    const remainingMs = end ? Math.max(0, end - serverNow()) : seconds * 1000;
     const remaining = Math.ceil(remainingMs / 1000);
     const min = Math.floor(remaining / 60);
     const sec = remaining % 60;
@@ -749,14 +751,14 @@ function renderDuelTimer(el, current, seconds) {
   start.onclick = action(async () => {
     await update(ref(db, `rooms/${roomCode}/current`), {
       timerDuration: seconds,
-      timerEnd: Date.now() + seconds * 1000
+      timerEnd: Date.now() + Number((await get(ref(db, '.info/serverTimeOffset'))).val() || serverTimeOffset || 0) + seconds * 1000
     });
   });
 
   box.append(label, start);
   el.append(box);
   paint();
-  if (current.timerEnd && Number(current.timerEnd) > Date.now()) {
+  if (current.timerEnd && Number(current.timerEnd) > serverNow()) {
     duelTimerInterval = setInterval(paint, 250);
   }
 }
@@ -1038,6 +1040,9 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getDatabase(app);
+  onValue(ref(db, '.info/serverTimeOffset'), snapshot => {
+    serverTimeOffset = Number(snapshot.val() || 0);
+  });
   await auth.authStateReady();
 
   const invite = new URLSearchParams(location.search).get('room');
