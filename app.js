@@ -14,6 +14,11 @@ const node = (tag, text = '', className = '') => {
 const now = () => Date.now();
 const randomItem = list => list[Math.floor(Math.random() * list.length)];
 const myUid = () => auth.currentUser?.uid || '';
+const ROOM_CODE_RE = /^[A-HJ-NP-Z2-9]{8}$/;
+function normalizeRoomCode(value) {
+  const code = String(value || '').trim().toUpperCase();
+  return ROOM_CODE_RE.test(code) ? code : '';
+}
 
 let DATA = null;
 let app, auth, db;
@@ -55,12 +60,25 @@ function cardId() {
 }
 
 function saveSession(code, name) {
-  localStorage.setItem('quizSession', JSON.stringify({ room: code, name }));
+  const safeCode = normalizeRoomCode(code);
+  if (!safeCode) return;
+  localStorage.setItem('quizSession', JSON.stringify({ room: safeCode, name }));
 }
 
 function getSession() {
-  try { return JSON.parse(localStorage.getItem('quizSession') || 'null'); }
-  catch { return null; }
+  try {
+    const raw = JSON.parse(localStorage.getItem('quizSession') || 'null');
+    if (!raw) return null;
+    const safeRoom = normalizeRoomCode(raw.room);
+    if (!safeRoom) {
+      localStorage.removeItem('quizSession');
+      return raw.name ? { name: String(raw.name).slice(0, 24) } : null;
+    }
+    return { room: safeRoom, name: String(raw.name || '').slice(0, 24) };
+  } catch {
+    localStorage.removeItem('quizSession');
+    return null;
+  }
 }
 
 function clearSession() {
@@ -243,8 +261,9 @@ async function createRoom() {
 
 async function joinRoom() {
   const name = $('playerName').value.trim();
-  const code = $('joinCode').value.trim().toUpperCase();
-  if (!name || name.length > 24 || !code) throw new Error('Bitte Name und Spielcode eingeben.');
+  const code = normalizeRoomCode($('joinCode').value);
+  if (!name || name.length > 24) throw new Error('Bitte einen Namen mit maximal 24 Zeichen eingeben.');
+  if (!code) throw new Error('Bitte einen gültigen 8-stelligen Spielcode eingeben.');
   await ensureAnonymousAuth();
 
   const meta = (await get(ref(db, `rooms/${code}/meta`))).val();
@@ -257,6 +276,12 @@ async function joinRoom() {
 }
 
 function openRoom(code) {
+  const safeCode = normalizeRoomCode(code);
+  if (!safeCode) {
+    clearSession();
+    throw new Error('Ungültiger Spielcode. Bitte die Lobby erneut über Spielcode oder QR-Code öffnen.');
+  }
+  code = safeCode;
   roomCode = code;
   activeView = 'settings';
   previousRoomStatus = '';
@@ -265,7 +290,7 @@ function openRoom(code) {
   show('room', true);
   $('roomCode').textContent = code;
 
-  const link = new URL(window.location.href);
+  const link = new URL(window.location.pathname, window.location.origin);
   link.searchParams.set('room', code);
   $('inviteLink').href = link.href;
   $('inviteLink').textContent = link.href;
@@ -1088,21 +1113,28 @@ try {
   db = getDatabase(app);
   await auth.authStateReady();
 
-  const invite = new URLSearchParams(location.search).get('room');
-  if (invite) $('joinCode').value = invite.toUpperCase();
+  const inviteRaw = new URL(window.location.href).searchParams.get('room');
+  const inviteCode = normalizeRoomCode(inviteRaw);
+  if (inviteCode) {
+    $('joinCode').value = inviteCode;
+  } else if (inviteRaw) {
+    // Ungültige alte/kaputte QR-Links dürfen niemals in einen Firebase-Pfad gelangen.
+    const cleanUrl = new URL(window.location.pathname, window.location.origin);
+    history.replaceState(null, '', cleanUrl.href);
+  }
 
   const session = getSession();
-  const inviteCode = invite?.toUpperCase() || '';
+  if (session?.name) $('playerName').value = session.name;
+
   if (session?.room && auth.currentUser && (!inviteCode || session.room === inviteCode)) {
-    const player = (await get(ref(db, `rooms/${session.room}/players/${myUid()}`))).val();
+    const playerPath = `rooms/${session.room}/players/${myUid()}`;
+    const player = (await get(ref(db, playerPath))).val();
     if (player) {
       $('playerName').value = session.name || player.name || '';
       openRoom(session.room);
     } else {
       clearSession();
     }
-  } else if (session?.name) {
-    $('playerName').value = session.name;
   }
 } catch (error) {
   console.error(error);
