@@ -22,6 +22,7 @@ let roomState = null;
 let unsubscribeRoom = null;
 let activeView = 'settings';
 let previousRoomStatus = '';
+let duelTimerInterval = null;
 
 function alertUser(message, error = false) {
   const el = $('message');
@@ -87,6 +88,52 @@ function activeKnowledge() {
   // Alle gelieferten Wissensfragen dürfen schon gezogen werden.
   // Solange eine echte Lösung fehlt, zeigt die Webseite später nur "Antwort kommt noch".
   return DATA.wissen || [];
+}
+
+function categoryPool(category) {
+  if (category === 'wissen') return activeKnowledge();
+  if (category === 'duell') {
+    const one = DATA.duelle?.['1v1'] || [];
+    const two = Object.keys(roomState?.players || {}).length >= 4 ? (DATA.duelle?.['2v2'] || []) : [];
+    return [...one, ...two];
+  }
+  if (category === 'regel') {
+    // Eine bereits aktive Regel wird nicht noch einmal gezogen.
+    const activeSourceIds = new Set(Object.values(roomState?.activeRules || {}).map(rule => rule.sourceId || rule.id));
+    return (DATA.regeln || []).filter(rule => !activeSourceIds.has(rule.id));
+  }
+  const key = { trinken: 'trinken', rolle: 'rollen', ereignis: 'ereignisse' }[category];
+  return DATA[key] || [];
+}
+
+function pickUnusedCard(category) {
+  const pool = categoryPool(category);
+  if (!pool.length) return { item: null, resetCycle: false };
+  const used = roomState?.usedCards?.[category] || {};
+  const unused = pool.filter(item => !used[item.id]);
+  if (unused.length) return { item: randomItem(unused), resetCycle: false };
+  return { item: randomItem(pool), resetCycle: true };
+}
+
+async function markCardUsed(category, contentId, resetCycle) {
+  const path = `rooms/${roomCode}/usedCards/${category}`;
+  if (resetCycle) {
+    await set(ref(db, path), { [contentId]: true });
+  } else {
+    await set(ref(db, `${path}/${contentId}`), true);
+  }
+}
+
+function extractTimerSeconds(text = '') {
+  const match = String(text).match(/(\d+)\s*(Sekunden?|Minuten?)/i);
+  if (!match) return 0;
+  const value = Number(match[1]);
+  return /minute/i.test(match[2]) ? value * 60 : value;
+}
+
+function clearDuelTimer() {
+  if (duelTimerInterval) clearInterval(duelTimerInterval);
+  duelTimerInterval = null;
 }
 
 function sortedPlayers() {
@@ -439,20 +486,7 @@ async function drawCard(category) {
   if (!roomState?.players?.[myUid()]) throw new Error('Du bist nicht Teil dieser Lobby.');
   if (roomState.current) throw new Error('Es ist bereits eine Karte geöffnet.');
 
-  let item;
-  if (category === 'wissen') {
-    const available = activeKnowledge();
-    if (!available.length) throw new Error('Es sind keine Wissensfragen vorhanden.');
-    item = randomItem(available);
-  } else if (category === 'duell') {
-    const one = DATA.duelle?.['1v1'] || [];
-    const two = Object.keys(roomState.players || {}).length >= 4 ? (DATA.duelle?.['2v2'] || []) : [];
-    item = randomItem([...one, ...two]);
-  } else {
-    const key = { trinken: 'trinken', regel: 'regeln', rolle: 'rollen', ereignis: 'ereignisse' }[category];
-    item = randomItem(DATA[key] || []);
-  }
-
+  const { item, resetCycle } = pickUnusedCard(category);
   if (!item) throw new Error('Für diese Kategorie sind keine Inhalte vorhanden.');
 
   const nextCard = {
@@ -464,21 +498,45 @@ async function drawCard(category) {
     solutionVisible: false
   };
 
+  if (category === 'wissen') {
+    nextCard.knowledgeTargets = Object.fromEntries(
+      sortedPlayers().map(([uid, player]) => [uid, player.name || 'Spieler'])
+    );
+  }
+  if (category === 'regel' && item.id !== 'regel_035_erstelle_eine_eigene_regel') {
+    nextCard.ruleNeedsReplacement = Object.keys(roomState?.activeRules || {}).length >= 3;
+    nextCard.ruleActivated = false;
+  }
+
   const result = await runTransaction(ref(db, `rooms/${roomCode}/current`), current => {
     if (current) return;
     return nextCard;
   });
   if (!result.committed) throw new Error('Jemand anderes hat gerade bereits eine Karte gezogen.');
 
-  // Regeln werden dauerhaft als aktiv gespeichert, bis jemand sie mit X deaktiviert
-  // oder ein passendes Ereignis sie entfernt/ersetzt.
+  // Gezogene Inhalte werden pro Kategorie abgehakt. Erst wenn der aktuelle Pool
+  // komplett verbraucht ist, beginnt für diese Kategorie ein neuer Durchlauf.
+  await markCardUsed(category, item.id, resetCycle);
+
+  // Es dürfen höchstens drei Regeln gleichzeitig aktiv sein. Ist bereits das
+  // Maximum erreicht, wird die neue Regel erst nach Auswahl einer alten aktiviert.
   if (category === 'regel' && item.id !== 'regel_035_erstelle_eine_eigene_regel') {
-    await set(ref(db, `rooms/${roomCode}/activeRules/${item.id}`), {
-      id: item.id,
-      title: item.title,
-      addedBy: myUid(),
-      addedAt: now()
-    });
+    const activeRules = Object.entries(roomState?.activeRules || {});
+    if (activeRules.length < 3) {
+      await update(ref(db, `rooms/${roomCode}`), {
+        [`activeRules/${item.id}`]: {
+          id: item.id,
+          sourceId: item.id,
+          title: item.title,
+          text: item.text,
+          addedBy: myUid(),
+          addedAt: now()
+        },
+        'current/ruleActivated': true
+      });
+    } else {
+      await update(ref(db, `rooms/${roomCode}/current`), { ruleNeedsReplacement: true, ruleActivated: false });
+    }
   }
 
   // Eine gezogene Rolle gehört der Person, die sie auf ihrem Handy gezogen hat.
@@ -518,8 +576,9 @@ function eventActor(current) {
 }
 
 async function assignRandomRole(uid) {
-  const item = randomItem(DATA.rollen || []);
+  const { item, resetCycle } = pickUnusedCard('rolle');
   if (!item) throw new Error('Es sind keine Rollen vorhanden.');
+  await markCardUsed('rolle', item.id, resetCycle);
   await finishEventAction(`Neuer Titel: ${item.title}`, {
     [`players/${uid}/role`]: rolePayload(item)
   });
@@ -626,14 +685,25 @@ function renderEventActions(el, current, content) {
     button.onclick = action(async () => {
       if (!activeRules.length) throw new Error('Aktuell ist keine Regel aktiv.');
       const [oldId, oldRule] = randomItem(activeRules);
-      const blocked = new Set(activeRules.map(([id]) => id));
-      const candidates = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel');
-      const fallback = (DATA.regeln || []).filter(rule => rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel');
-      const replacement = randomItem(candidates.length ? candidates : fallback);
-      if (!replacement) throw new Error('Es konnte keine neue Regel gefunden werden.');
+      const { item: replacement, resetCycle } = pickUnusedCard('regel');
+      if (!replacement || replacement.id === 'regel_035_erstelle_eine_eigene_regel') {
+        const used = roomState?.usedCards?.regel || {};
+        const blocked = new Set(activeRules.map(([id, rule]) => rule.sourceId || id));
+        const candidates = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel' && !used[rule.id]);
+        const fallback = (DATA.regeln || []).filter(rule => !blocked.has(rule.id) && rule.id !== oldId && rule.id !== 'regel_035_erstelle_eine_eigene_regel');
+        const alt = randomItem(candidates.length ? candidates : fallback);
+        if (!alt) throw new Error('Es konnte keine neue Regel gefunden werden.');
+        await markCardUsed('regel', alt.id, !candidates.length);
+        await finishEventAction(`„${oldRule.title}“ wurde durch „${alt.title}“ ersetzt.`, {
+          [`activeRules/${oldId}`]: null,
+          [`activeRules/${alt.id}`]: { id: alt.id, sourceId: alt.id, title: alt.title, text: alt.text, addedBy: myUid(), addedAt: now() }
+        });
+        return;
+      }
+      await markCardUsed('regel', replacement.id, resetCycle);
       await finishEventAction(`„${oldRule.title}“ wurde durch „${replacement.title}“ ersetzt.`, {
         [`activeRules/${oldId}`]: null,
-        [`activeRules/${replacement.id}`]: { id: replacement.id, title: replacement.title, addedBy: myUid(), addedAt: now() }
+        [`activeRules/${replacement.id}`]: { id: replacement.id, sourceId: replacement.id, title: replacement.title, text: replacement.text, addedBy: myUid(), addedAt: now() }
       });
     });
     box.append(button);
@@ -659,6 +729,101 @@ function renderEventActions(el, current, content) {
   if (used) el.append(box);
 }
 
+function renderDuelTimer(el, current, seconds) {
+  if (!seconds) return;
+  const box = node('div', '', 'duel-timer');
+  const label = node('div', '', 'timer-display');
+  const start = node('button', current.timerEnd ? 'Timer neu starten' : `Timer starten (${seconds} s)`, 'secondary');
+
+  const paint = () => {
+    const end = Number(roomState?.current?.timerEnd || current.timerEnd || 0);
+    const remainingMs = end ? Math.max(0, end - Date.now()) : seconds * 1000;
+    const remaining = Math.ceil(remainingMs / 1000);
+    const min = Math.floor(remaining / 60);
+    const sec = remaining % 60;
+    label.textContent = end && remaining <= 0 ? 'Zeit abgelaufen!' : `${String(min).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+    label.classList.toggle('timer-finished', Boolean(end && remaining <= 0));
+    if (end && remaining <= 0) clearDuelTimer();
+  };
+
+  start.onclick = action(async () => {
+    await update(ref(db, `rooms/${roomCode}/current`), {
+      timerDuration: seconds,
+      timerEnd: Date.now() + seconds * 1000
+    });
+  });
+
+  box.append(label, start);
+  el.append(box);
+  paint();
+  if (current.timerEnd && Number(current.timerEnd) > Date.now()) {
+    duelTimerInterval = setInterval(paint, 250);
+  }
+}
+
+function renderKnowledgeQuestion(el, current, content) {
+  el.append(contentCard('Wissen', content.question, content.subtype || '', 'wissen'));
+
+  const targetMap = current.knowledgeTargets || {};
+  const targetUids = Object.keys(targetMap).filter(uid => roomState?.players?.[uid]);
+  const answers = roomState?.knowledgeAnswers?.[current.id] || {};
+  const myAnswer = answers[myUid()] || null;
+  const amTarget = Boolean(targetMap[myUid()]);
+  const answeredCount = targetUids.filter(uid => answers[uid]?.value !== undefined).length;
+  const allDone = targetUids.length > 0 && answeredCount === targetUids.length;
+
+  const responseBox = node('div', '', 'knowledge-response');
+  if (amTarget && !myAnswer && !allDone) {
+    const label = node('label', 'Deine Antwort');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.maxLength = 120;
+    if (content.answerType === 'number') input.inputMode = 'decimal';
+    input.placeholder = content.unit ? `Antwort in ${content.unit}` : 'Antwort eintippen';
+    label.append(input);
+    const send = node('button', 'Antwort abgeben');
+    send.onclick = action(async () => {
+      const value = input.value.trim();
+      if (!value) throw new Error('Bitte zuerst eine Antwort eingeben.');
+      await set(ref(db, `rooms/${roomCode}/knowledgeAnswers/${current.id}/${myUid()}`), {
+        value,
+        name: roomState.players?.[myUid()]?.name || targetMap[myUid()] || 'Spieler',
+        submittedAt: now()
+      });
+    });
+    responseBox.append(label, send);
+  } else if (amTarget && myAnswer && !allDone) {
+    responseBox.append(node('div', 'Deine Antwort ist gespeichert. Warte auf die anderen.', 'notice'));
+  } else if (!amTarget && !allDone) {
+    responseBox.append(node('div', 'Diese Wissensfrage wurde gestartet, bevor du der Lobby beigetreten bist. Du bist bei dieser Runde nicht mehr antwortpflichtig.', 'muted'));
+  }
+
+  if (!allDone) {
+    responseBox.append(node('div', `${answeredCount} von ${targetUids.length} Antworten abgegeben.`, 'muted'));
+  } else {
+    const results = node('div', '', 'knowledge-results');
+    results.append(node('h3', 'Antworten'));
+    for (const uid of targetUids) {
+      const answer = answers[uid];
+      const name = roomState.players?.[uid]?.name || targetMap[uid] || answer?.name || 'Spieler';
+      results.append(node('div', `${name}: ${answer?.value ?? '—'}`, 'knowledge-answer-row'));
+    }
+    responseBox.append(results);
+
+    if (current.solutionVisible) {
+      const hasAnswer = content.answerStatus !== 'placeholder' && content.correctAnswer && content.correctAnswer !== '__NOCH_OFFEN__';
+      const answer = hasAnswer ? `${content.correctAnswer}${content.unit ? ` ${content.unit}` : ''}` : 'Antwort kommt noch';
+      responseBox.append(node('div', hasAnswer ? `Antwort: ${answer}` : answer, 'answer-box'));
+    } else {
+      const reveal = node('button', 'Antwort anzeigen', 'secondary');
+      reveal.onclick = action(() => update(ref(db, `rooms/${roomCode}/current`), { solutionVisible: true }));
+      responseBox.append(reveal);
+    }
+  }
+
+  el.append(responseBox);
+}
+
 function contentCard(title, text, kicker = '', category = '') {
   const card = node('div', '', `content-card${category ? ` card-${category}` : ''}`);
   if (kicker) card.append(node('div', kicker, 'muted'));
@@ -667,6 +832,7 @@ function contentCard(title, text, kicker = '', category = '') {
 }
 
 function renderCurrentCard() {
+  clearDuelTimer();
   const el = $('currentArea');
   el.replaceChildren();
   const current = roomState.current;
@@ -680,24 +846,16 @@ function renderCurrentCard() {
   }
 
   if (current.category === 'wissen') {
-    el.append(contentCard('Wissen', content.question, content.subtype || '', 'wissen'));
-    if (current.solutionVisible) {
-      const hasAnswer = content.answerStatus !== 'placeholder' && content.correctAnswer && content.correctAnswer !== '__NOCH_OFFEN__';
-      const answer = hasAnswer
-        ? `${content.correctAnswer}${content.unit ? ` ${content.unit}` : ''}`
-        : 'Antwort kommt noch';
-      el.append(node('div', hasAnswer ? `Antwort: ${answer}` : answer, 'answer-box'));
-    } else {
-      const reveal = node('button', 'Antwort anzeigen', 'secondary');
-      reveal.onclick = action(() => update(ref(db, `rooms/${roomCode}/current`), { solutionVisible: true }));
-      el.append(reveal);
-    }
+    renderKnowledgeQuestion(el, current, content);
   } else if (current.category === 'duell') {
     el.append(contentCard(content.title, content.text, `Duell ${content.mode}`, 'duell'));
+    renderDuelTimer(el, current, extractTimerSeconds(content.text));
   } else if (current.category === 'trinken') {
     el.append(contentCard('Trinken', content.text, '', 'trinken'));
   } else if (current.category === 'regel') {
     el.append(contentCard(content.title, content.text, 'Regel', 'regel'));
+    const activeEntries = Object.entries(roomState?.activeRules || {});
+
     if (content.id === 'regel_035_erstelle_eine_eigene_regel') {
       const editor = node('div', '', 'custom-rule-editor');
       const titleLabel = node('label', 'Titel der eigenen Regel');
@@ -716,6 +874,17 @@ function renderCurrentCard() {
       textInput.value = current.customRuleText || '';
       textLabel.append(textInput);
 
+      let replacementSelect = null;
+      if (!current.customRuleKey && activeEntries.length >= 3) {
+        const control = selectControl(
+          'Es sind bereits 3 Regeln aktiv. Welche soll dafür raus?',
+          activeEntries.map(([id, rule]) => ({ value: id, label: rule.title || ruleInfo(id)?.title || id })),
+          'Regel zum Ersetzen auswählen'
+        );
+        replacementSelect = control.select;
+        editor.append(node('div', 'Maximal drei Regeln dürfen gleichzeitig aktiv sein.', 'notice'), control.wrap);
+      }
+
       const saveButton = node('button', current.customRuleKey ? 'Änderungen speichern' : 'Eigene Regel speichern');
       const savedNotice = node('div', '', 'muted');
       if (current.customRuleKey) savedNotice.textContent = 'Diese eigene Regel ist bereits aktiv. Du kannst Titel und Beschreibung hier noch ändern.';
@@ -726,8 +895,12 @@ function renderCurrentCard() {
         if (!title) throw new Error('Bitte einen Titel für die eigene Regel eingeben.');
         if (!text) throw new Error('Bitte eine Beschreibung für die eigene Regel eingeben.');
 
+        const latestRules = Object.entries(roomState?.activeRules || {});
+        if (!current.customRuleKey && latestRules.length >= 3 && !replacementSelect?.value) {
+          throw new Error('Bitte auswählen, welche aktive Regel ersetzt werden soll.');
+        }
+
         const key = current.customRuleKey || `custom_${current.id}`;
-        const previousKey = current.customRuleKey || '';
         const ruleData = {
           id: key,
           sourceId: content.id,
@@ -742,14 +915,64 @@ function renderCurrentCard() {
           'current/customRuleKey': key,
           'current/customRuleTitle': title,
           'current/customRuleText': text,
-          'current/customRuleAddedAt': ruleData.addedAt
+          'current/customRuleAddedAt': ruleData.addedAt,
+          'current/ruleActivated': true
         };
-        if (previousKey && previousKey !== key) updates[`activeRules/${previousKey}`] = null;
+        if (!current.customRuleKey && latestRules.length >= 3 && replacementSelect?.value) {
+          updates[`activeRules/${replacementSelect.value}`] = null;
+        }
         await update(ref(db, `rooms/${roomCode}`), updates);
       });
 
       editor.append(titleLabel, textLabel, saveButton, savedNotice);
       el.append(editor);
+    } else if (current.ruleNeedsReplacement && !current.ruleActivated) {
+      const box = node('div', '', 'rule-replacement');
+      const latestRules = Object.entries(roomState?.activeRules || {});
+      box.append(node('div', 'Es dürfen nur 3 Regeln gleichzeitig aktiv sein.', 'notice'));
+      if (latestRules.length >= 3) {
+        const { wrap, select } = selectControl(
+          'Welche aktive Regel soll raus?',
+          latestRules.map(([id, rule]) => ({ value: id, label: rule.title || ruleInfo(id)?.title || id })),
+          'Regel auswählen'
+        );
+        const replace = node('button', `Durch „${content.title}“ ersetzen`);
+        replace.onclick = action(async () => {
+          if (!select.value) throw new Error('Bitte eine Regel auswählen.');
+          await update(ref(db, `rooms/${roomCode}`), {
+            [`activeRules/${select.value}`]: null,
+            [`activeRules/${content.id}`]: {
+              id: content.id,
+              sourceId: content.id,
+              title: content.title,
+              text: content.text,
+              addedBy: current.startedBy || myUid(),
+              addedAt: now()
+            },
+            'current/ruleActivated': true,
+            'current/ruleNeedsReplacement': false
+          });
+        });
+        box.append(wrap, replace);
+      } else {
+        const activate = node('button', `„${content.title}“ aktivieren`);
+        activate.onclick = action(async () => {
+          await update(ref(db, `rooms/${roomCode}`), {
+            [`activeRules/${content.id}`]: {
+              id: content.id,
+              sourceId: content.id,
+              title: content.title,
+              text: content.text,
+              addedBy: current.startedBy || myUid(),
+              addedAt: now()
+            },
+            'current/ruleActivated': true,
+            'current/ruleNeedsReplacement': false
+          });
+        });
+        box.append(activate);
+      }
+      el.append(box);
     } else if ((content.variables || []).length) {
       el.append(node('div', 'Legt die benötigten Werte oder Personen gemeinsam fest. Die Regel bleibt anschließend unter „Aktive Regeln“ sichtbar.', 'notice'));
     } else {
@@ -774,10 +997,23 @@ function appendDoneButton(el) {
   const needsCustomRule = current?.category === 'regel'
     && current?.contentId === 'regel_035_erstelle_eine_eigene_regel'
     && !current?.customRuleKey;
-  done.disabled = needsCustomRule;
+  const needsRuleReplacement = current?.category === 'regel'
+    && current?.contentId !== 'regel_035_erstelle_eine_eigene_regel'
+    && current?.ruleNeedsReplacement
+    && !current?.ruleActivated;
+  const knowledgeTargets = Object.keys(current?.knowledgeTargets || {}).filter(uid => roomState?.players?.[uid]);
+  const knowledgeAnswers = current?.id ? (roomState?.knowledgeAnswers?.[current.id] || {}) : {};
+  const knowledgeIncomplete = current?.category === 'wissen'
+    && knowledgeTargets.some(uid => knowledgeAnswers[uid]?.value === undefined);
+
+  done.disabled = needsCustomRule || needsRuleReplacement || knowledgeIncomplete;
   if (needsCustomRule) done.title = 'Speichere zuerst deine eigene Regel.';
+  else if (needsRuleReplacement) done.title = 'Wähle zuerst aus, welche aktive Regel ersetzt wird.';
+  else if (knowledgeIncomplete) done.title = 'Warte, bis alle ihre Wissensantwort abgegeben haben.';
+
   done.onclick = action(async () => {
     if (!roomState?.players?.[myUid()]) throw new Error('Du bist nicht Teil dieser Lobby.');
+    clearDuelTimer();
     await remove(ref(db, `rooms/${roomCode}/current`));
   });
   el.append(done);
