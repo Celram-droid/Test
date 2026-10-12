@@ -397,16 +397,20 @@ async function startGame() {
 
 function setRoomView(view) {
   const playing = roomState?.meta?.status === 'playing';
+  if (!['game', 'rules', 'settings'].includes(view)) view = 'settings';
   if (view === 'game' && !playing) view = 'settings';
   activeView = view;
 
   show('gameView', activeView === 'game');
+  show('rulesView', activeView === 'rules');
   show('settingsView', activeView === 'settings');
 
   const gameButton = $('gameTabBtn');
+  const rulesButton = $('rulesTabBtn');
   const settingsButton = $('settingsTabBtn');
   gameButton.disabled = !playing;
   gameButton.classList.toggle('active', activeView === 'game');
+  rulesButton.classList.toggle('active', activeView === 'rules');
   settingsButton.classList.toggle('active', activeView === 'settings');
 }
 
@@ -426,7 +430,7 @@ function renderRoom() {
   // startet, wechselt die Oberfläche automatisch auf die Spielansicht.
   if (!previousRoomStatus) activeView = inLobby ? 'settings' : 'game';
   if (previousRoomStatus === 'lobby' && status === 'playing') activeView = 'game';
-  if (inLobby) activeView = 'settings';
+  if (inLobby && activeView === 'game') activeView = 'settings';
   previousRoomStatus = status;
   setRoomView(activeView);
 }
@@ -1108,6 +1112,7 @@ $('joinBtn').onclick = action(joinRoom);
 $('leaveLobbyBtn').onclick = action(leaveLobby);
 $('endLobbyBtn').onclick = action(endLobby);
 $('gameTabBtn').onclick = () => setRoomView('game');
+$('rulesTabBtn').onclick = () => setRoomView('rules');
 $('settingsTabBtn').onclick = () => setRoomView('settings');
 $('infoDialogClose').onclick = () => $('infoDialog').close();
 $('infoDialog').addEventListener('click', event => {
